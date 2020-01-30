@@ -12,7 +12,11 @@
     "sh": "cd .. && docker-compose exec server sh"
   },
   "dependencies": {
-    "express": "^4.17.0"
+    "connect-redis": "^4.0.4",
+    "express": "^4.17.0",
+    "express-session": "^1.17.0",
+    "pg": "^7.18.1",
+    "redis": "^2.8.0"
   },
   "devDependencies": {
     "nodemon": "^2.0.0"

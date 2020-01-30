@@ -1,6 +1,6 @@
 version: "3.7"
 services:
-  server:
+  smack:
     environment: 
       NODE_ENV: production
     networks:
