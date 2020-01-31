@@ -11,10 +11,10 @@ export const Drawer = styled(SwipeableDrawer)`
   }
 `
 
-export const Pages = styled.div`
+export const Servers = styled.div`
   background: ${props => props.theme.palette.background.default};
 `
 
-export const Chats = styled.div`
+export const Rooms = styled.div`
 
 `

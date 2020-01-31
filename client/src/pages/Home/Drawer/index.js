@@ -1,6 +1,6 @@
 import React from "react"
 import useLogic from "./useLogic"
-import { Drawer as CoreDrawer, Pages, Chats } from "./useStyles"
+import { Drawer as CoreDrawer, Servers, Rooms } from "./useStyles"
 
 function Drawer() {
   const {
@@ -16,9 +16,9 @@ function Drawer() {
       onClose={onClose}
       onOpen={onClose}
       variant={isDesktop ? "permanent" : "temporary"}>
-      <Pages>A</Pages>
+      <Servers>A</Servers>
 
-      <Chats>BBBB</Chats>
+      <Rooms>BBBB</Rooms>
     </CoreDrawer>
   )
 }
