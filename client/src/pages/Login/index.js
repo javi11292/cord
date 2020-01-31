@@ -1,7 +1,7 @@
 import React from "react"
-import { Grid, Container, TextField, Button, Typography } from "@material-ui/core"
+import { Grid, TextField } from "@material-ui/core"
 import useLogic from "./useLogic"
-import useStyles from "./useStyles"
+import { Button, Title, Box } from "./useStyles"
 
 function Login() {
   const {
@@ -13,12 +13,11 @@ function Login() {
     navigate,
     isLogin,
   } = useLogic()
-  const styles = useStyles()
 
   return (
-    <Container maxWidth="sm" className={styles.root}>
+    <Box maxWidth="sm">
       <Grid container direction="column">
-        <Typography variant="h4" className={styles.title}>{isLogin ? "Login" : "Registrarse"}</Typography>
+        <Title variant="h4">{isLogin ? "Login" : "Registrarse"}</Title>
 
         <TextField
           variant="filled"
@@ -57,18 +56,16 @@ function Login() {
 
         <Grid container justify="space-between">
           <Button
-            className={styles.button}
             onClick={navigate}
             variant="outlined"
             color="primary">{isLogin ? "Registrarse" : "Cancelar"}</Button>
           <Button
-            className={styles.button}
             onClick={submit}
             variant="contained"
             color="primary">Enviar</Button>
         </Grid>
       </Grid>
-    </Container>
+    </Box>
   )
 }
 

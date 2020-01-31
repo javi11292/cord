@@ -1,4 +1,5 @@
 import React from "react"
+import { ThemeProvider } from "styled-components"
 import {
   createMuiTheme,
   MuiThemeProvider,
@@ -9,34 +10,39 @@ import {
   DialogContentText,
   DialogActions,
   Button,
+  StylesProvider
 } from "@material-ui/core"
 import Main from "components/Main"
 import useLogic from "./useLogic"
 
-const theme = createMuiTheme()
+const theme = createMuiTheme({ palette: { type: "dark" } })
 
 function App() {
   const { update, handleClose } = useLogic()
 
   return (
-    <MuiThemeProvider theme={theme}>
-      <CssBaseline />
+    <StylesProvider injectFirst>
+      <MuiThemeProvider theme={theme}>
+        <ThemeProvider theme={theme}>
+          <CssBaseline />
 
-      <Dialog onClose={handleClose} open={!!update}>
-        <DialogTitle>Nueva versión disponible</DialogTitle>
+          <Dialog onClose={handleClose} open={!!update}>
+            <DialogTitle>Nueva versión disponible</DialogTitle>
 
-        <DialogContent>
-          <DialogContentText>Pulsa "Actualizar" para aplicar los cambios</DialogContentText>
-        </DialogContent>
+            <DialogContent>
+              <DialogContentText>Pulsa "Actualizar" para aplicar los cambios</DialogContentText>
+            </DialogContent>
 
-        <DialogActions>
-          <Button onClick={handleClose} color="secondary">Cancelar</Button>
-          <Button onClick={handleClose} data-confirm color="primary">Actualizar</Button>
-        </DialogActions>
-      </Dialog>
+            <DialogActions>
+              <Button onClick={handleClose} color="secondary">Cancelar</Button>
+              <Button onClick={handleClose} data-confirm color="primary">Actualizar</Button>
+            </DialogActions>
+          </Dialog>
 
-      <Main />
-    </MuiThemeProvider>
+          <Main />
+        </ThemeProvider>
+      </MuiThemeProvider>
+    </StylesProvider>
   )
 }
 
