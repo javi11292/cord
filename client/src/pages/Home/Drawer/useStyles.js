@@ -1,11 +1,12 @@
 import styled from "styled-components"
-import { Drawer as MuiDrawer } from "@material-ui/core"
+import { SwipeableDrawer } from "@material-ui/core"
 
-export const Drawer = styled(MuiDrawer)`
+export const Drawer = styled(SwipeableDrawer)`
   & .MuiDrawer-paper {
-    flex-direction: row;
+    display: grid;
+    grid-template-columns: auto 1fr;
     ${props => props.theme.breakpoints.up("sm")} {
-    position: relative;
+      position: relative;
     }
   }
 `
@@ -15,5 +16,5 @@ export const Pages = styled.div`
 `
 
 export const Chats = styled.div`
-  flex: 1;
+
 `

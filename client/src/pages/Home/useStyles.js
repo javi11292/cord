@@ -1,11 +1,16 @@
 import styled from "styled-components"
 
 export const Box = styled.div`
-  display: flex;
+  display: grid;
+  grid-template-rows: auto 1fr;
   height: 100%;
 `
 
+export const Frame = styled.div`
+  display: grid;
+  grid-template-columns: auto 1fr;
+`
+
 export const Content = styled.div`
-  flex: 1;
   overflow: auto;
 `

@@ -2,6 +2,10 @@ import getStore from "libraries/store"
 import { NOTIFICATION } from "libraries/constants"
 
 export default getStore({
+  openDrawer: {
+    state: false,
+    reducer: (state, value) => value,
+  },
   logged: {
     state: null,
     reducer: (state, value) => value,

@@ -25,11 +25,9 @@ function useLogic() {
         confirmPassword: user.confirmPassword,
       })
 
-      if (error) {
-        throw new Error(error)
-      } else {
-        setLogged(true)
-      }
+      if (error) throw new Error(error)
+
+      setLogged(true)
     } catch (error) {
       addNotification({ action: "push", value: error.message })
     }
