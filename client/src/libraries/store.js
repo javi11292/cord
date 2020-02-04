@@ -1,14 +1,14 @@
 import { useReducer, useEffect, useCallback } from "react"
 import produce from "immer"
 
-function addListeners(listeners, key) {
+function addListener(listeners, key) {
   return { ...listeners, [key]: new Set() }
 }
 
 function getStore(fields) {
   const store = {
     fields,
-    listeners: Object.keys(fields).reduce(addListeners, {}),
+    listeners: Object.keys(fields).reduce(addListener, {}),
 
     get(key) {
       return this.fields[key].state

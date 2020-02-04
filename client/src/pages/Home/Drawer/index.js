@@ -1,6 +1,8 @@
 import React from "react"
+import Add from "@material-ui/icons/Add"
+import Chat from "@material-ui/icons/ChatBubble"
 import useLogic from "./useLogic"
-import { Drawer as CoreDrawer, Servers, Rooms } from "./useStyles"
+import { Drawer as CoreDrawer, Servers, Rooms, IconButton } from "./useStyles"
 
 function Drawer() {
   const {
@@ -16,7 +18,14 @@ function Drawer() {
       onClose={onClose}
       onOpen={onClose}
       variant={isDesktop ? "permanent" : "temporary"}>
-      <Servers>A</Servers>
+      <Servers>
+        <IconButton color="inherit">
+          <Chat />
+        </IconButton>
+        <IconButton color="inherit">
+          <Add />
+        </IconButton>
+      </Servers>
 
       <Rooms>BBBB</Rooms>
     </CoreDrawer>
