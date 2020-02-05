@@ -7,12 +7,8 @@ function useLogic() {
 
   useEffect(() => {
     async function checkSession() {
-      try {
-        const { logged } = await get("/user/session")
-        setLogged(logged)
-      } catch {
-        setLogged(false)
-      }
+      const { logged } = await get("/user/session")
+      setLogged(!!logged)
     }
 
     checkSession()

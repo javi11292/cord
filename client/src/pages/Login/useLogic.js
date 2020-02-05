@@ -18,19 +18,18 @@ function useLogic() {
   })
 
   async function submit() {
-    try {
-      const { error } = await post(`/user${pathname}`, {
-        username: user.username,
-        password: user.password,
-        confirmPassword: user.confirmPassword,
-      })
+    const { error } = await post(`/user${pathname}`, {
+      username: user.username,
+      password: user.password,
+      confirmPassword: user.confirmPassword,
+    })
 
-      if (error) throw new Error(error)
-
-      setLogged(true)
-    } catch (error) {
-      addNotification({ action: "push", value: error.message })
+    if (error) {
+      addNotification({ action: "push", value: error })
+      return
     }
+
+    setLogged(true)
   }
 
   function handleChange({ target }) {

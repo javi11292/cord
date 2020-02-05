@@ -3,8 +3,6 @@ import { HOST } from "./constants"
 const host = `${HOST}/api`
 
 async function parseResponse(response) {
-  if (!response.ok) throw new Error("Error")
-
   const text = await response.text()
 
   try {
@@ -14,8 +12,23 @@ async function parseResponse(response) {
   }
 }
 
-export async function post(path, body) {
-  const response = await fetch(`${host}${path}`, {
+async function send(input, init) {
+  try {
+    const response = await fetch(input, init)
+    return parseResponse(response)
+  } catch {
+    return { error: "Error" }
+  }
+}
+
+export function get(path) {
+  return send(`${host}${path}`, {
+    credentials: "include",
+  })
+}
+
+export function post(path, body) {
+  return send(`${host}${path}`, {
     credentials: "include",
     method: "POST",
     headers: {
@@ -23,27 +36,15 @@ export async function post(path, body) {
     },
     body: JSON.stringify(body),
   })
-
-  return parseResponse(response)
 }
 
-export async function get(path) {
-  const response = await fetch(`${host}${path}`, {
-    credentials: "include",
-  })
-
-  return parseResponse(response)
-}
-
-export async function upload(path, data) {
+export function upload(path, data) {
   const formData = new FormData()
   Object.entries(data).forEach(([key, value]) => formData.append(key, value))
 
-  const response = await fetch(`${host}${path}`, {
+  return send(`${host}${path}`, {
     credentials: "include",
     method: "POST",
     body: formData,
   })
-
-  return parseResponse(response)
 }

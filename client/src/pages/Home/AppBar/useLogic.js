@@ -13,17 +13,15 @@ function useLogic() {
   const isDesktop = useMediaQuery(theme.breakpoints.up("sm"))
 
   async function logout() {
-    try {
-      const { error } = await post("/user/logout")
-      if (error) throw new Error(error)
-      refresh()
+    const { error } = await post("/user/logout")
+    if (error) {
+      addNotification({ action: "push", value: error })
+      return
     }
-    catch (error) {
-      addNotification({ action: "push", value: error.message })
-    }
+    refresh()
   }
 
-  function toggleDrawer(){
+  function toggleDrawer() {
     setOpenDrawer(true)
   }
 
