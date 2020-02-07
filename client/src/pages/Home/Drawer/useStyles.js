@@ -1,5 +1,6 @@
+import React from "react"
 import styled from "styled-components"
-import { SwipeableDrawer, IconButton as MuiIconButton } from "@material-ui/core"
+import { Divider as MuiDivider, SwipeableDrawer, IconButton as MuiIconButton } from "@material-ui/core"
 
 export const Drawer = styled(SwipeableDrawer)`
   & .MuiDrawer-paper {
@@ -11,15 +12,20 @@ export const Drawer = styled(SwipeableDrawer)`
   }
 `
 
-export const IconButton = styled(MuiIconButton)`
+export const IconButton = styled(React.forwardRef(({ color, ...props }, ref) => <MuiIconButton {...props} ref={ref} />))`
+  line-height: 1;
   background: ${props => props.theme.palette.background.paper};
+  color: ${props => props.color};
   padding: 0.6rem;
+  &:hover {
+    background: ${props => props.theme.palette.action.disabled};
+  }
   @media (hover: none) {
     && {
       background: ${props => props.theme.palette.background.paper};
     }
   }
-  &:nth-child(n+2){
+  &:nth-child(n+4){
     margin-top: 0.5rem;
   }
 `
@@ -29,6 +35,11 @@ export const Servers = styled.div`
   padding: 0.6rem;
   display: flex;
   flex-direction: column;
+`
+
+export const Divider = styled(MuiDivider)`
+  margin: 0.75rem 0.25rem;
+  height: 0.15rem;
 `
 
 export const Rooms = styled.div`

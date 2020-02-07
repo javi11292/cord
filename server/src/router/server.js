@@ -1,10 +1,18 @@
 const router = require("express").Router()
 const postgres = require("../postgres")
 
+router.get("/get", async (req, res) => {
+  try {
+    res.send(await postgres.server.get(req.session.username))
+  } catch (error) {
+    res.send({ error: error.message })
+  }
+})
+
 router.post("/add", async (req, res) => {
   try {
-    await postgres.server.add(req.sesion.username, req.body.name)
-    res.sendStatus(200)
+    const response = await postgres.server.add(req.session.username, req.body.name)
+    res.send(response)
   } catch (error) {
     res.send({ error: error.message })
   }

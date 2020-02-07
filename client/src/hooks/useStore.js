@@ -10,6 +10,12 @@ export default getStore({
     state: null,
     reducer: (state, value) => value,
   },
+  servers: {
+    state: [],
+    reducer: (state, value) => {
+      state.push(...value)
+    }
+  },
   notifications: {
     state: [],
     reducer: (state, { action, value, type }) => {
