@@ -1,5 +1,5 @@
 import React from "react"
-import { Tooltip, Icon } from "@material-ui/core"
+import { Tooltip, Icon, Dialog, DialogContent, DialogActions, Button, TextField } from "@material-ui/core"
 import Add from "@material-ui/icons/Add"
 import Chat from "@material-ui/icons/ChatBubble"
 import useLogic from "./useLogic"
@@ -12,6 +12,11 @@ function Drawer() {
     onClose,
     addServer,
     servers,
+    showDialog,
+    toggleDialog,
+    serverName,
+    handleChange,
+    handleKeyDown,
   } = useLogic()
 
   return (
@@ -21,6 +26,24 @@ function Drawer() {
       onClose={onClose}
       onOpen={onClose}
       variant={isDesktop ? "permanent" : "temporary"}>
+      <Dialog open={showDialog} onClose={toggleDialog}>
+        <DialogContent>
+          <TextField
+            autoFocus
+            autoComplete="off"
+            label="Nombre del servidor"
+            margin="dense"
+            value={serverName}
+            InputLabelProps={{ shrink: true }}
+            onChange={handleChange}
+            onKeyDown={handleKeyDown} />
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={toggleDialog}>Cancelar</Button>
+          <Button onClick={addServer} color="primary">Crear</Button>
+        </DialogActions>
+      </Dialog>
+
       <Servers>
         <Tooltip title="Mensajes directos" placement="right">
           <IconButton>
@@ -39,7 +62,7 @@ function Drawer() {
         ))}
 
         <Tooltip title="Crear servidor" placement="right">
-          <IconButton color="limegreen" onClick={addServer}>
+          <IconButton color="limegreen" onClick={toggleDialog}>
             <Add />
           </IconButton>
         </Tooltip>

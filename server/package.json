@@ -8,8 +8,7 @@
     "production": "npm run docker -- -f docker-compose.production.yml",
     "build": "npm run development -- build",
     "start": "npm run development -- up",
-    "deploy": "npm run production -- up --build",
-    "sh": "cd .. && docker-compose exec server sh"
+    "deploy": "npm run production -- up --build"
   },
   "dependencies": {
     "connect-redis": "^4.0.4",

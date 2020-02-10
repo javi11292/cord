@@ -15,7 +15,7 @@ import {
 import Main from "components/Main"
 import useLogic from "./useLogic"
 
-const theme = createMuiTheme({ palette: { type: "dark" } })
+const theme = createMuiTheme({ palette: { type: "dark", primary: { main: "#7070FF" } } })
 
 function App() {
   const { update, handleClose } = useLogic()

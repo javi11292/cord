@@ -1,10 +1,12 @@
-import { useEffect } from "react"
+import { useEffect, useState } from "react"
 import { useMediaQuery, useTheme } from "@material-ui/core"
 import useStore from "hooks/useStore"
 import { get, post } from "libraries/fetch"
 import { NOTIFICATION } from "libraries/constants"
 
 function useLogic() {
+  const [serverName, setServerName] = useState("")
+  const [showDialog, setShowDialog] = useState(false)
   const addNotification = useStore("notifications", false)
   const [servers, setServers] = useStore("servers")
   const [openDrawer, setOpenDrawer] = useStore("openDrawer")
@@ -30,17 +32,30 @@ function useLogic() {
     setOpenDrawer(false)
   }
 
+  function toggleDialog() {
+    setShowDialog(!showDialog)
+    setServerName("")
+  }
+
   async function addServer() {
-    const name = "K"
-    const response = await post("/server/add", { name })
+    toggleDialog()
+    const response = await post("/server/add", { name: serverName })
 
     if (response.error) {
       addNotification({ action: "push", value: response.error })
       return
     }
 
-    addNotification({ action: "push", value: `Servidor ${name} creado`, type: NOTIFICATION.info })
+    addNotification({ action: "push", value: "Servidor creado", type: NOTIFICATION.info })
     setServers(response)
+  }
+
+  function handleChange({ target }) {
+    setServerName(target.value)
+  }
+
+  function handleKeyDown({ key }) {
+    if (key === "Enter" && serverName) addServer()
   }
 
   return {
@@ -49,6 +64,11 @@ function useLogic() {
     openDrawer,
     addServer,
     servers,
+    toggleDialog,
+    showDialog,
+    serverName,
+    handleChange,
+    handleKeyDown,
   }
 }
 
