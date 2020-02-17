@@ -11,10 +11,14 @@ export default getStore({
     reducer: (state, value) => value,
   },
   servers: {
-    state: [],
+    state: {},
     reducer: (state, value) => {
-      state.push(...value)
+      value.forEach(server => state[server.id] = server)
     }
+  },
+  activeServer: {
+    state: null,
+    reducer: (state, value) => value
   },
   notifications: {
     state: [],

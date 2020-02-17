@@ -5,6 +5,7 @@ import { get, post } from "libraries/fetch"
 import { NOTIFICATION } from "libraries/constants"
 
 function useLogic() {
+  const [activeServer, setActiveServer] = useStore("activeServer")
   const [serverName, setServerName] = useState("")
   const [showDialog, setShowDialog] = useState(false)
   const addNotification = useStore("notifications", false)
@@ -58,7 +59,12 @@ function useLogic() {
     if (key === "Enter" && serverName) addServer()
   }
 
+  function handleServerClick({ currentTarget }) {
+    setActiveServer(currentTarget.value)
+  }
+
   return {
+    activeServer,
     isDesktop,
     onClose,
     openDrawer,
@@ -69,6 +75,7 @@ function useLogic() {
     serverName,
     handleChange,
     handleKeyDown,
+    handleServerClick,
   }
 }
 

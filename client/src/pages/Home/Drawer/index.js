@@ -3,10 +3,11 @@ import { Tooltip, Icon, Dialog, DialogContent, DialogActions, Button, TextField 
 import Add from "@material-ui/icons/Add"
 import Chat from "@material-ui/icons/ChatBubble"
 import useLogic from "./useLogic"
-import { Drawer as CoreDrawer, Servers, Rooms, IconButton, Divider } from "./useStyles"
+import { Drawer as CoreDrawer, Servers, Rooms, IconButton, Divider, RoomName } from "./useStyles"
 
 function Drawer() {
   const {
+    activeServer,
     isDesktop,
     openDrawer,
     onClose,
@@ -17,6 +18,7 @@ function Drawer() {
     serverName,
     handleChange,
     handleKeyDown,
+    handleServerClick,
   } = useLogic()
 
   return (
@@ -46,29 +48,31 @@ function Drawer() {
 
       <Servers>
         <Tooltip title="Mensajes directos" placement="right">
-          <IconButton>
+          <IconButton active={!activeServer} onClick={handleServerClick}>
             <Chat />
           </IconButton>
         </Tooltip>
 
         <Divider />
 
-        {servers.map(({ id, name }) => (
+        {Object.values(servers).map(({ id, name }) => (
           <Tooltip key={id} title={name} placement="right">
-            <IconButton>
+            <IconButton onClick={handleServerClick} value={id} active={activeServer === id}>
               <Icon>{name.slice(0, 1).toUpperCase()}</Icon>
             </IconButton>
           </Tooltip>
         ))}
 
         <Tooltip title="Crear servidor" placement="right">
-          <IconButton color="limegreen" onClick={toggleDialog}>
+          <IconButton textColor="limegreen" onClick={toggleDialog}>
             <Add />
           </IconButton>
         </Tooltip>
       </Servers>
 
-      <Rooms>BBBB</Rooms>
+      <Rooms>
+        <RoomName>{activeServer}</RoomName>
+      </Rooms>
     </CoreDrawer>
   )
 }

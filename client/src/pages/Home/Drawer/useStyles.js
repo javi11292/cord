@@ -12,17 +12,17 @@ export const Drawer = styled(SwipeableDrawer)`
   }
 `
 
-export const IconButton = styled(React.forwardRef(({ color, ...props }, ref) => <MuiIconButton {...props} ref={ref} />))`
+export const IconButton = styled(React.forwardRef(({ textColor, active, ...props }, ref) => <MuiIconButton {...props} ref={ref} />))`
   line-height: 1;
-  background: ${props => props.theme.palette.background.paper};
-  color: ${props => props.color};
+  background: ${props => !props.active ? props.theme.palette.background.paper : props.theme.palette.action.active};
+  color: ${props => props.textColor || !props.active ? props.theme.palette.text.primary : props.theme.palette.primary.contrastText };
   padding: 0.6rem;
   &:hover {
-    background: ${props => props.theme.palette.action.disabled};
+    background: ${props => !props.active ? props.theme.palette.action.disabled : props.theme.palette.primary.main};
   }
   @media (hover: none) {
     && {
-      background: ${props => props.theme.palette.background.paper};
+      background: ${props => !props.active ? props.theme.palette.background.paper : props.theme.palette.action.active};
     }
   }
   &:nth-child(n+4){
@@ -43,5 +43,14 @@ export const Divider = styled(MuiDivider)`
 `
 
 export const Rooms = styled.div`
+  width: 15rem;
+  margin: 0.6rem;
+  display: flex;
+  flex-direction: column;
+`
 
+export const RoomName = styled.div`
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 `
