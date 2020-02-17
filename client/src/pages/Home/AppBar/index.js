@@ -13,7 +13,7 @@ function AppBar() {
   const { logout, refresh, toggleDrawer, isDesktop } = useLogic()
 
   return (
-    <MuiAppBar position="static">
+    <MuiAppBar position="static" color="inherit">
       <Toolbar variant="dense" disableGutters>
         {!isDesktop &&
           <IconButton color="inherit" onClick={toggleDrawer}>
