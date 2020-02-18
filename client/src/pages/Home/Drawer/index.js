@@ -1,9 +1,12 @@
-import React from "react"
+import React, { Suspense } from "react"
 import { Tooltip, Icon, Dialog, DialogContent, DialogActions, Button, TextField } from "@material-ui/core"
 import Add from "@material-ui/icons/Add"
 import Chat from "@material-ui/icons/ChatBubble"
 import useLogic from "./useLogic"
-import { Drawer as CoreDrawer, Servers, Rooms, IconButton, Divider, RoomName } from "./useStyles"
+import { Drawer as CoreDrawer, Servers, Rooms, IconButton, Divider } from "./useStyles"
+
+const DirectMessages = React.lazy(() => import("../DirectMessages"))
+const Server = React.lazy(() => import("../Server"))
 
 function Drawer() {
   const {
@@ -71,7 +74,11 @@ function Drawer() {
       </Servers>
 
       <Rooms>
-        <RoomName>{activeServer}</RoomName>
+        <Suspense fallback={null}>
+          {!activeServer
+            ? <DirectMessages />
+            : <Server id={activeServer} />}
+        </Suspense>
       </Rooms>
     </CoreDrawer>
   )

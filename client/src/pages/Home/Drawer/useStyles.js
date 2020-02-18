@@ -48,9 +48,3 @@ export const Rooms = styled.div`
   display: flex;
   flex-direction: column;
 `
-
-export const RoomName = styled.div`
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-`
