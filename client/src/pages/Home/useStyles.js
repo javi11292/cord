@@ -9,6 +9,7 @@ export const Box = styled.div`
 export const Frame = styled.div`
   display: grid;
   grid-template-columns: auto 1fr;
+  overflow: auto;
 `
 
 export const Content = styled.div`
