@@ -1,19 +1,18 @@
 import React from "react"
 import {
-  AppBar as MuiAppBar,
   Toolbar,
   IconButton,
 } from "@material-ui/core"
 import Exit from "@material-ui/icons/ExitToApp"
 import Menu from "@material-ui/icons/Menu"
 import useLogic from "./useLogic"
-import { Buttons, Title } from "./useStyles"
+import { Buttons, Title, AppBar as CoreAppBar } from "./useStyles"
 
 function AppBar() {
   const { logout, refresh, toggleDrawer, isDesktop } = useLogic()
 
   return (
-    <MuiAppBar position="static" color="inherit">
+    <CoreAppBar position="static" color="inherit">
       <Toolbar variant="dense" disableGutters>
         {!isDesktop &&
           <IconButton color="inherit" onClick={toggleDrawer}>
@@ -29,7 +28,7 @@ function AppBar() {
           </IconButton>
         </Buttons>
       </Toolbar>
-    </MuiAppBar>
+    </CoreAppBar>
   )
 }
 

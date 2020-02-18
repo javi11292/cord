@@ -64,7 +64,7 @@ function Drawer() {
         ))}
 
         <Tooltip title="Crear servidor" placement="right">
-          <IconButton textColor="limegreen" onClick={toggleDialog}>
+          <IconButton color="primary" onClick={toggleDialog}>
             <Add />
           </IconButton>
         </Tooltip>

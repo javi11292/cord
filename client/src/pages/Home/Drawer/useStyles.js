@@ -12,17 +12,16 @@ export const Drawer = styled(SwipeableDrawer)`
   }
 `
 
-export const IconButton = styled(React.forwardRef(({ textColor, active, ...props }, ref) => <MuiIconButton {...props} ref={ref} />))`
+export const IconButton = styled(React.forwardRef(({ active, ...props }, ref) => <MuiIconButton {...props} ref={ref} />))`
   line-height: 1;
-  background: ${props => !props.active ? props.theme.palette.background.paper : props.theme.palette.action.active};
-  color: ${props => props.textColor || !props.active ? props.theme.palette.text.primary : props.theme.palette.primary.contrastText };
+  background: ${props => !props.active ? props.theme.palette.background.paper : props.theme.palette.primary.main};
   padding: 0.6rem;
   &:hover {
-    background: ${props => !props.active ? props.theme.palette.action.disabled : props.theme.palette.primary.main};
+    background: ${props => !props.active ? props.theme.palette.action.disabled : props.theme.palette.primary.dark};
   }
   @media (hover: none) {
     && {
-      background: ${props => !props.active ? props.theme.palette.background.paper : props.theme.palette.action.active};
+      background: ${props => !props.active ? props.theme.palette.background.paper : props.theme.palette.primary.main};
     }
   }
   &:nth-child(n+4){

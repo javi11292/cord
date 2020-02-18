@@ -1,5 +1,9 @@
 import styled from "styled-components"
-import { Typography } from "@material-ui/core"
+import { Typography, AppBar as MuiAppBar } from "@material-ui/core"
+
+export const AppBar = styled(MuiAppBar)`
+  z-index: ${props => props.theme.zIndex.drawer + 1};
+`
 
 export const Buttons = styled.div`
   margin-left: auto;
