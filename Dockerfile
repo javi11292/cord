@@ -1,4 +1,6 @@
 FROM node:alpine as client
+RUN apk add --no-cache chromium
+ENV PUPPETEER_SKIP_CHROMIUM_DOWNLOAD true
 WORKDIR /client
 COPY client/package*.json ./
 RUN npm install

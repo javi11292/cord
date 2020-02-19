@@ -3,7 +3,7 @@ import styled from "styled-components"
 import { Divider as MuiDivider, SwipeableDrawer, IconButton as MuiIconButton } from "@material-ui/core"
 
 export const Drawer = styled(SwipeableDrawer)`
-  overflow: auto;
+  overflow-y: auto;
   & .MuiDrawer-paper {
     display: grid;
     grid-template-columns: auto 1fr;
@@ -44,7 +44,7 @@ export const Divider = styled(MuiDivider)`
 
 export const Rooms = styled.div`
   width: 15rem;
-  margin: 0.6rem;
+  padding: 0.6rem;
   display: flex;
   flex-direction: column;
 `

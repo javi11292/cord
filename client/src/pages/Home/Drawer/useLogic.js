@@ -23,7 +23,7 @@ function useLogic() {
         return
       }
 
-      setServers(response)
+      if (response instanceof Array) setServers(response)
     }
 
     getServers()

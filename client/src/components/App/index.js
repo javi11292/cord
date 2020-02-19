@@ -13,10 +13,17 @@ import {
   StylesProvider
 } from "@material-ui/core"
 import green from "@material-ui/core/colors/green"
+import blue from "@material-ui/core/colors/blue"
 import Main from "components/Main"
 import useLogic from "./useLogic"
 
-const theme = createMuiTheme({ palette: { type: "dark", primary: { main: green[600] } } })
+const theme = createMuiTheme({
+  palette: {
+    type: "dark",
+    primary: { main: green[600] },
+    secondary: { main: blue[600] },
+  },
+})
 
 function App() {
   const { update, handleClose } = useLogic()
