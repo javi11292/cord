@@ -1,11 +1,18 @@
 import React from "react"
-import { Box, Input, TextField } from "./useStyles"
+import ArrowBack from "@material-ui/icons/ArrowBack"
+import useLogic from "./useLogic"
+import { Box, Input, TextField, IconButton } from "./useStyles"
 
 function Search() {
+  const { back } = useLogic()
+
   return (
     <Box maxWidth="sm">
       <Input>
-        <TextField margin="dense" />
+        <IconButton size="small" onClick={back}>
+          <ArrowBack />
+        </IconButton>
+        <TextField margin="dense" placeholder="Nombre" />
       </Input>
       Coming soon...
       </Box>
