@@ -10,7 +10,7 @@ function Home() {
       <Frame>
         <Drawer />
         <Content>
-          <span>Contenido</span>
+          <span>Coming soon...</span>
         </Content>
       </Frame>
     </Box>

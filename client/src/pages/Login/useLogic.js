@@ -29,7 +29,7 @@ function useLogic() {
       return
     }
 
-    setLogged(!!error)
+    setLogged(!error)
   }
 
   function handleChange({ target }) {

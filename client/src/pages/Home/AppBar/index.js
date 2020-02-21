@@ -20,7 +20,7 @@ function AppBar() {
           </IconButton>
         }
 
-        <Title variant="h6" onClick={refresh}>Smack</Title>
+        <Title variant="h6" onClick={refresh}>Cord</Title>
 
         <Buttons>
           <IconButton color="inherit" onClick={logout}>
