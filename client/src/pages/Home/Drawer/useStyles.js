@@ -44,7 +44,7 @@ export const Divider = styled(MuiDivider)`
 
 export const Rooms = styled.div`
   width: 15rem;
-  padding: 0.6rem;
+  padding: 1rem;
   display: flex;
   flex-direction: column;
 `

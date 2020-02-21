@@ -1,9 +1,18 @@
 import React from "react"
-import { RoomName } from "./useStyles"
+import useLogic from "./useLogic"
+import { RoomName, Button } from "./useStyles"
 
 function DirectMessages() {
+  const { search } = useLogic()
+
   return (
-    <RoomName>Mensajes directos</RoomName>
+    <>
+      <Button
+        onClick={search}
+        size="small"
+        variant="contained">Buscar</Button>
+      <RoomName>Mensajes directos</RoomName>
+    </>
   )
 }
 
