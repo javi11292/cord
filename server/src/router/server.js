@@ -11,8 +11,7 @@ router.get("/get", async (req, res) => {
 
 router.post("/add", async (req, res) => {
   try {
-    const response = await postgres.server.add(req.session.username, req.body.name)
-    res.send(response)
+    res.send(await postgres.server.add(req.session.username, req.body.name))
   } catch (error) {
     res.send({ error: error.message })
   }

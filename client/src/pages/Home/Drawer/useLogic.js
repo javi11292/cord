@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react"
 import { useMediaQuery, useTheme } from "@material-ui/core"
 import useStore from "hooks/useStore"
-import { get, post } from "libraries/fetch"
+import { post } from "libraries/fetch"
 import { NOTIFICATION } from "libraries/constants"
 
 function useLogic() {
@@ -14,21 +14,6 @@ function useLogic() {
   const [open, setOpen] = useState(false)
   const theme = useTheme()
   const isDesktop = useMediaQuery(theme.breakpoints.up("sm"))
-
-  useEffect(() => {
-    async function getServers() {
-      const response = await get("/server/get")
-
-      if (response.error) {
-        addNotification({ action: "push", value: response.error })
-        return
-      }
-
-      if (response instanceof Array) setServers(response)
-    }
-
-    getServers()
-  }, [addNotification, setServers])
 
   useEffect(() => {
     setOpen(openDrawer)

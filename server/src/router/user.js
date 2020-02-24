@@ -13,6 +13,14 @@ router.get("/session", (req, res) => {
   })
 })
 
+router.post("/get", async (req, res) => {
+  try {
+    res.send(await postgres.user.get(req.body.username + "%"))
+  } catch (error) {
+    res.send({ error: error.message })
+  }
+})
+
 router.post("/login", async (req, res) => {
   try {
     await postgres.user.login(req.body.username, req.body.password)

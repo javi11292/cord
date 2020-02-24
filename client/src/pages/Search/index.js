@@ -4,7 +4,7 @@ import useLogic from "./useLogic"
 import { Box, Input, TextField, IconButton } from "./useStyles"
 
 function Search() {
-  const { back } = useLogic()
+  const { back, handleChange, value } = useLogic()
 
   return (
     <Box maxWidth="sm">
@@ -12,7 +12,11 @@ function Search() {
         <IconButton size="small" onClick={back}>
           <ArrowBack />
         </IconButton>
-        <TextField margin="dense" placeholder="Nombre" />
+        <TextField
+          value={value}
+          onChange={handleChange}
+          margin="dense"
+          placeholder="Nombre" />
       </Input>
       Coming soon...
       </Box>

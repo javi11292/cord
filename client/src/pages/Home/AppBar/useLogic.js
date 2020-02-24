@@ -16,9 +16,9 @@ function useLogic() {
     const { error } = await post("/user/logout")
     if (error) {
       addNotification({ action: "push", value: error })
-      return
+    } else {
+      refresh()
     }
-    refresh()
   }
 
   function toggleDrawer() {

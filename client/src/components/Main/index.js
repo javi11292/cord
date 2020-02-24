@@ -2,7 +2,7 @@ import React, { Suspense } from "react"
 import { BrowserRouter, Switch, Route, Redirect } from "react-router-dom"
 import Notifications from "components/Notifications"
 import Splash from "pages/Splash"
-import useStore from "hooks/useStore"
+import useLogic from "./useLogic"
 import { Box } from "./useStyles"
 
 const Home = React.lazy(() => import("pages/Home"))
@@ -10,7 +10,7 @@ const Login = React.lazy(() => import("pages/Login"))
 const Search = React.lazy(() => import("pages/Search"))
 
 function Main() {
-  const [logged] = useStore("logged")
+  const { logged } = useLogic()
 
   const homeRedirect = logged === true && <Redirect to="/" />
   const loginRedirect = logged === false && <Redirect to="/login" />
