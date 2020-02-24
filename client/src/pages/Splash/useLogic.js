@@ -5,12 +5,12 @@ import useStore from "hooks/useStore"
 function useLogic() {
   const [animationEnd, setAnimationEnd] = useState(false)
   const setUserName = useStore("username", false)
-  const [loggedResponse, setLoggedResponse] = useState()
+  const [sessionResponse, setSessionResponse] = useState()
 
   useEffect(() => {
     async function checkSession() {
       const { logged, username } = await get("/user/session")
-      setLoggedResponse(logged ? username : "")
+      setSessionResponse(logged ? username : "")
     }
 
     checkSession()
@@ -18,9 +18,9 @@ function useLogic() {
 
   useEffect(() => {
     if (animationEnd) {
-      setUserName(loggedResponse)
+      setUserName(sessionResponse)
     }
-  }, [animationEnd, loggedResponse, setUserName])
+  }, [animationEnd, sessionResponse, setUserName])
 
   function handleAnimationEnd() {
     setAnimationEnd(true)
