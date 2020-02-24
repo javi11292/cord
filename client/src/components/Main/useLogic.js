@@ -4,7 +4,7 @@ import useStore from "hooks/useStore"
 
 function useLogic() {
   const addNotification = useStore("notifications", false)
-  const [user] = useStore("user")
+  const [username] = useStore("username")
   const setServers = useStore("servers", false)
 
   useEffect(() => {
@@ -19,10 +19,10 @@ function useLogic() {
       if (response instanceof Array) setServers(response)
     }
 
-    if (user) getServers()
-  }, [user, addNotification, setServers])
+    if (username) getServers()
+  }, [username, addNotification, setServers])
 
-  return { user }
+  return { username }
 }
 
 export default useLogic

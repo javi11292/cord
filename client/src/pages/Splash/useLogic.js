@@ -4,7 +4,7 @@ import useStore from "hooks/useStore"
 
 function useLogic() {
   const [animationEnd, setAnimationEnd] = useState(false)
-  const setUser = useStore("user", false)
+  const setUserName = useStore("username", false)
   const [loggedResponse, setLoggedResponse] = useState()
 
   useEffect(() => {
@@ -18,9 +18,9 @@ function useLogic() {
 
   useEffect(() => {
     if (animationEnd) {
-      setUser(loggedResponse)
+      setUserName(loggedResponse)
     }
-  }, [animationEnd, loggedResponse, setUser])
+  }, [animationEnd, loggedResponse, setUserName])
 
   function handleAnimationEnd() {
     setAnimationEnd(true)

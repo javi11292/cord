@@ -10,15 +10,15 @@ const Login = React.lazy(() => import("pages/Login"))
 const Search = React.lazy(() => import("pages/Search"))
 
 function Main() {
-  const { user } = useLogic()
+  const { username } = useLogic()
 
-  const homeRedirect = user !== "" && <Redirect to="/" />
-  const loginRedirect = user === "" && <Redirect to="/login" />
+  const homeRedirect = username !== "" && <Redirect to="/" />
+  const loginRedirect = username === "" && <Redirect to="/login" />
 
   return (
     <Box>
       <Notifications />
-      {user === null
+      {username === null
         ? <Splash />
         : (
           <BrowserRouter basename={process.env.PUBLIC_URL}>

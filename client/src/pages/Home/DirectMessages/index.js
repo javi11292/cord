@@ -3,12 +3,8 @@ import { List, ListItem, ListItemText } from "@material-ui/core"
 import useLogic from "./useLogic"
 import { RoomName, Button } from "./useStyles"
 
-function getRoomName(name, currentUser, users) {
-  return name || users.find(user => user !== currentUser)
-}
-
 function DirectMessages() {
-  const { search, activeRoom, rooms, user } = useLogic()
+  const { search, activeRoom, rooms } = useLogic()
 
   return (
     <>
@@ -18,9 +14,9 @@ function DirectMessages() {
         variant="contained">Buscar</Button>
       <RoomName>Mensajes directos</RoomName>
       <List>
-        {Object.values(rooms).map(({ id, name, users }) => (
+        {Object.values(rooms).map(({ id, name }) => (
           <ListItem button key={id} selected={id === activeRoom}>
-            <ListItemText primary={getRoomName(name, user, users)} />
+            <ListItemText primary={name} />
           </ListItem>
         ))}
       </List>
