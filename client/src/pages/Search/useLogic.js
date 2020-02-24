@@ -4,23 +4,15 @@ import { post } from "libraries/fetch"
 import useStore from "hooks/useStore"
 
 function useLogic() {
+  const setActiveRoom = useStore("activeRoom", false)
   const addNotification = useStore("notifications", false)
   const [users, setUsers] = useState([])
   const [value, setValue] = useState("")
-  const [debouncedValue, setDebouncedValue] = useState("")
   const history = useHistory()
 
   useEffect(() => {
-    const timeout = setTimeout(() => {
-      setDebouncedValue(value)
-    }, 1000)
-
-    return () => clearTimeout(timeout)
-  }, [value])
-
-  useEffect(() => {
     async function fetchUsers() {
-      const response = await post("/user/get", { username: debouncedValue })
+      const response = await post("/user/get", { username: value })
 
       if (response.error) {
         addNotification({ action: "push", value: response.error })
@@ -29,8 +21,9 @@ function useLogic() {
       }
     }
 
-    if (debouncedValue) fetchUsers()
-  }, [debouncedValue, addNotification])
+    if (value) fetchUsers()
+    else setUsers([])
+  }, [value, addNotification])
 
   function back() {
     history.goBack()
@@ -40,7 +33,13 @@ function useLogic() {
     setValue(target.value)
   }
 
-  return { back, handleChange, value, users }
+  function handleClick({ currentTarget }) {
+    // TODO: crear room si no existe
+    setActiveRoom(currentTarget.id)
+    history.push("/", { openDrawer: false })
+  }
+
+  return { back, handleChange, handleClick, value, users }
 }
 
 export default useLogic

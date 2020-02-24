@@ -13,8 +13,11 @@ function user(pool) {
     if (rows.length === 0) throw new Error("Credenciales inválidas")
   }
 
-  async function get(username) {
-    const { rows } = await pool.query("SELECT username FROM users WHERE username LIKE $1 ORDER BY username LIMIT 10 ", [username])
+  async function get(username, string) {
+    const { rows } = await pool.query(
+      "SELECT username FROM users WHERE username <> $1 AND username LIKE $2 ORDER BY username LIMIT 10 ",
+      [username, string],
+    )
     return rows
   }
   return {

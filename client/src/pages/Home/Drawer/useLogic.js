@@ -1,10 +1,12 @@
 import { useEffect, useState } from "react"
+import { useLocation } from "react-router-dom"
 import { useMediaQuery, useTheme } from "@material-ui/core"
 import useStore from "hooks/useStore"
 import { post } from "libraries/fetch"
 import { NOTIFICATION } from "libraries/constants"
 
 function useLogic() {
+  const location = useLocation()
   const [activeServer, setActiveServer] = useStore("activeServer")
   const [serverName, setServerName] = useState("")
   const [showDialog, setShowDialog] = useState(false)
@@ -14,6 +16,12 @@ function useLogic() {
   const [open, setOpen] = useState(false)
   const theme = useTheme()
   const isDesktop = useMediaQuery(theme.breakpoints.up("sm"))
+
+  const locationOpenDrawer = location.state?.openDrawer
+
+  useEffect(() => {
+    if (locationOpenDrawer !== undefined) setOpenDrawer(!!locationOpenDrawer)
+  }, [setOpenDrawer, locationOpenDrawer])
 
   useEffect(() => {
     setOpen(openDrawer)

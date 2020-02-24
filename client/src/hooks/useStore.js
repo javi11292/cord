@@ -6,7 +6,7 @@ export default getStore({
     state: false,
     reducer: (state, value) => value,
   },
-  logged: {
+  user: {
     state: null,
     reducer: (state, value) => value,
   },
@@ -16,7 +16,17 @@ export default getStore({
       value.forEach(server => state[server.id] = server)
     }
   },
+  rooms: {
+    state: {},
+    reducer: (state, value) => {
+      value.forEach(room => state[room.id] = room)
+    }
+  },
   activeServer: {
+    state: null,
+    reducer: (state, value) => value
+  },
+  activeRoom: {
     state: null,
     reducer: (state, value) => value
   },

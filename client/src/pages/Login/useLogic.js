@@ -8,7 +8,7 @@ function useLogic() {
   const { pathname } = useLocation()
   const inputRefs = useRef([])
   const addNotification = useStore("notifications", false)
-  const setLogged = useStore("logged", false)
+  const setStoreUser = useStore("user", false)
   const isLogin = pathname.startsWith("/login")
 
   const [user, setUser] = useState({
@@ -29,7 +29,7 @@ function useLogic() {
       return
     }
 
-    setLogged(!error)
+    setStoreUser(user.username)
   }
 
   function handleChange({ target }) {
