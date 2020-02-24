@@ -21,6 +21,6 @@ export const Container = styled.div`
 `
 
 export const Icon = styled(Logo)`
-  animation: ${rotate} 1.5s;
+  animation: ${rotate} 1s;
   margin-bottom: 1rem;
 `

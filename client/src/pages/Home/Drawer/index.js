@@ -12,7 +12,7 @@ function Drawer() {
   const {
     activeServer,
     isDesktop,
-    openDrawer,
+    open,
     onClose,
     addServer,
     servers,
@@ -27,7 +27,7 @@ function Drawer() {
   return (
     <CoreDrawer
       disableSwipeToOpen
-      open={openDrawer}
+      open={open}
       onClose={onClose}
       onOpen={onClose}
       variant={isDesktop ? "permanent" : "temporary"}>

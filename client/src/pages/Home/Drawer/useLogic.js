@@ -11,6 +11,7 @@ function useLogic() {
   const addNotification = useStore("notifications", false)
   const [servers, setServers] = useStore("servers")
   const [openDrawer, setOpenDrawer] = useStore("openDrawer")
+  const [open, setOpen] = useState(false)
   const theme = useTheme()
   const isDesktop = useMediaQuery(theme.breakpoints.up("sm"))
 
@@ -28,6 +29,10 @@ function useLogic() {
 
     getServers()
   }, [addNotification, setServers])
+
+  useEffect(() => {
+    setOpen(openDrawer)
+  }, [openDrawer])
 
   function onClose() {
     setOpenDrawer(false)
@@ -67,7 +72,7 @@ function useLogic() {
     activeServer,
     isDesktop,
     onClose,
-    openDrawer,
+    open,
     addServer,
     servers,
     toggleDialog,
