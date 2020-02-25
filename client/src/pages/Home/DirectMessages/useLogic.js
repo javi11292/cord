@@ -1,7 +1,6 @@
 import { useHistory } from "react-router-dom"
 import useStore from "hooks/useStore"
 
-
 function useLogic() {
   const history = useHistory()
   const [activeRoom] = useStore("activeRoom")

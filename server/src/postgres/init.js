@@ -13,6 +13,29 @@ function init(pool) {
     )`)
   }
 
+  function rooms() {
+    return pool.query(`CREATE TABLE IF NOT EXISTS rooms (
+      id TEXT PRIMARY KEY,
+      name TEXT
+    )`)
+  }
+
+  function serversRooms() {
+    return pool.query(`CREATE TABLE IF NOT EXISTS serversRooms (
+      serverId TEXT REFERENCES servers(id) ON DELETE CASCADE,
+      roomId TEXT REFERENCES rooms(id) ON DELETE CASCADE,
+      PRIMARY KEY (serverId, roomId)
+    )`)
+  }
+
+  function usersRooms() {
+    return pool.query(`CREATE TABLE IF NOT EXISTS usersRooms (
+      userId TEXT REFERENCES users(username) ON DELETE CASCADE,
+      roomId TEXT REFERENCES rooms(id) ON DELETE CASCADE,
+      PRIMARY KEY (userId, roomId)
+    )`)
+  }
+
   function usersServers() {
     return pool.query(`CREATE TABLE IF NOT EXISTS usersServers (
       userId TEXT REFERENCES users(username) ON DELETE CASCADE,
@@ -22,8 +45,8 @@ function init(pool) {
   }
 
   return async () => {
-    await Promise.all([users(), servers()])
-    await usersServers()
+    await Promise.all([users(), servers(), rooms()])
+    await Promise.all([usersServers(), usersRooms(), serversRooms()])
   }
 }
 

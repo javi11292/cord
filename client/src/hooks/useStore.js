@@ -20,8 +20,8 @@ export default getStore({
     state: {},
     reducer: (state, { username, rooms }) => {
       rooms.forEach(room => {
-        const id = !room.name ? room.users.find(user => user !== username) : room.id
-        state[id] = { ...room, name: room.name || id }
+        const id = !room.server ? room.users.find(user => user !== username) : room.id
+        state[id] = { ...room, id, name: room.name || id }
       })
     }
   },

@@ -4,8 +4,10 @@ import { post } from "libraries/fetch"
 import useStore from "hooks/useStore"
 
 function useLogic() {
+  const [rooms, setRooms] = useStore("rooms")
   const setActiveRoom = useStore("activeRoom", false)
   const addNotification = useStore("notifications", false)
+  const [username] = useStore("username")
   const [users, setUsers] = useState([])
   const [value, setValue] = useState("")
   const history = useHistory()
@@ -33,8 +35,16 @@ function useLogic() {
     setValue(target.value)
   }
 
-  function handleClick({ currentTarget }) {
-    // TODO: crear room si no existe
+  async function handleClick({ currentTarget }) {
+    if (!rooms[currentTarget.id]) {
+      const response = await post("/room/add", { users: [username, currentTarget.id] })
+      if (response.error) {
+        addNotification({ action: "push", value: response.error })
+        return
+      }
+      setRooms({ username, rooms: response })
+    }
+
     setActiveRoom(currentTarget.id)
     history.push("/", { openDrawer: false })
   }

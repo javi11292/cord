@@ -15,6 +15,7 @@ async function parseResponse(response) {
 async function send(input, init) {
   try {
     const response = await fetch(input, init)
+    if (!response.ok) throw new Error()
     return parseResponse(response)
   } catch {
     return { error: "Error" }

@@ -12,7 +12,7 @@ function server(pool) {
     if (!name) throw new Error("Nombre inválido")
     const serverId = uuidv4()
 
-    const { rows } = await pool.query("INSERT INTO servers (id, name) VALUES ($1, $2) RETURNING name, id", [serverId, name])
+    const { rows } = await pool.query("INSERT INTO servers (id, name) VALUES ($1, $2) RETURNING id, name", [serverId, name])
     await userServer.add(userId, serverId)
     return rows
   }
