@@ -4,7 +4,7 @@ import useLogic from "./useLogic"
 import { RoomName, Button, ListItem } from "./useStyles"
 
 function DirectMessages() {
-  const { search, activeRoom, rooms } = useLogic()
+  const { search, activeRoom, rooms, handleClick } = useLogic()
 
   return (
     <>
@@ -15,7 +15,12 @@ function DirectMessages() {
       <RoomName>Mensajes directos</RoomName>
       <List>
         {Object.values(rooms).map(({ id, name }) => (
-          <ListItem button key={id} selected={id === activeRoom}>
+          <ListItem
+            id={id}
+            onClick={handleClick}
+            button
+            key={id}
+            selected={id === activeRoom}>
             <ListItemText primary={name} />
           </ListItem>
         ))}

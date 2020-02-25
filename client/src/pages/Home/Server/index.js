@@ -3,7 +3,10 @@ import { RoomName } from "./useStyles"
 
 function Server({ id }) {
   return (
-    <RoomName>{id}</RoomName>
+    <>
+      <RoomName>{id}</RoomName>
+      Coming soon...
+    </>
   )
 }
 
