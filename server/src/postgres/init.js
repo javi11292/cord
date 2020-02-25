@@ -21,26 +21,26 @@ function init(pool) {
   }
 
   function serversRooms() {
-    return pool.query(`CREATE TABLE IF NOT EXISTS serversRooms (
-      serverId TEXT REFERENCES servers(id) ON DELETE CASCADE,
-      roomId TEXT REFERENCES rooms(id) ON DELETE CASCADE,
-      PRIMARY KEY (serverId, roomId)
+    return pool.query(`CREATE TABLE IF NOT EXISTS servers_rooms (
+      server_id TEXT REFERENCES servers(id) ON DELETE CASCADE,
+      room_id TEXT REFERENCES rooms(id) ON DELETE CASCADE,
+      PRIMARY KEY (server_id, room_id)
     )`)
   }
 
   function usersRooms() {
-    return pool.query(`CREATE TABLE IF NOT EXISTS usersRooms (
-      userId TEXT REFERENCES users(username) ON DELETE CASCADE,
-      roomId TEXT REFERENCES rooms(id) ON DELETE CASCADE,
-      PRIMARY KEY (userId, roomId)
+    return pool.query(`CREATE TABLE IF NOT EXISTS users_rooms (
+      user_id TEXT REFERENCES users(username) ON DELETE CASCADE,
+      room_id TEXT REFERENCES rooms(id) ON DELETE CASCADE,
+      PRIMARY KEY (user_id, room_id)
     )`)
   }
 
   function usersServers() {
-    return pool.query(`CREATE TABLE IF NOT EXISTS usersServers (
-      userId TEXT REFERENCES users(username) ON DELETE CASCADE,
-      serverId TEXT REFERENCES servers(id) ON DELETE CASCADE,
-      PRIMARY KEY (userId, serverId)
+    return pool.query(`CREATE TABLE IF NOT EXISTS users_servers (
+      user_id TEXT REFERENCES users(username) ON DELETE CASCADE,
+      server_id TEXT REFERENCES servers(id) ON DELETE CASCADE,
+      PRIMARY KEY (user_id, server_id)
     )`)
   }
 

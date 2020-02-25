@@ -1,7 +1,7 @@
 import React from "react"
-import { List, ListItem, ListItemText } from "@material-ui/core"
+import { List, ListItemText } from "@material-ui/core"
 import useLogic from "./useLogic"
-import { RoomName, Button } from "./useStyles"
+import { RoomName, Button, ListItem } from "./useStyles"
 
 function DirectMessages() {
   const { search, activeRoom, rooms } = useLogic()

@@ -4,7 +4,7 @@ function server(pool) {
   const userServer = require("./userServer")(pool)
 
   async function get(username) {
-    const { rows } = await pool.query("SELECT s.name, s.id FROM servers s, usersServers u WHERE s.id = u.serverId AND u.userId = $1", [username])
+    const { rows } = await pool.query("SELECT id, name FROM servers, users_servers WHERE id = server_id AND user_id = $1", [username])
     return rows
   }
 

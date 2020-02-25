@@ -6,21 +6,24 @@ function useLogic() {
   const addNotification = useStore("notifications", false)
   const [username] = useStore("username")
   const setServers = useStore("servers", false)
+  const setRooms = useStore("rooms", false)
 
   useEffect(() => {
-    async function getServers() {
-      const response = await get("/server/get")
+    async function getAll() {
+      const [servers, rooms] = await Promise.all([get("/server/get"), get("/room/get")])
+      const error = servers.error || rooms.error
 
-      if (response.error) {
-        addNotification({ action: "push", value: response.error })
+      if (error) {
+        addNotification({ action: "push", value: error })
         return
       }
 
-      if (response instanceof Array) setServers(response)
+      setServers(servers)
+      setRooms({ username, rooms })
     }
 
-    if (username) getServers()
-  }, [username, addNotification, setServers])
+    if (username) getAll()
+  }, [username, addNotification, setServers, setRooms])
 
   return { username }
 }

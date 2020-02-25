@@ -1,5 +1,5 @@
 import styled from "styled-components"
-import { Button as MuiButton } from "@material-ui/core"
+import { Button as MuiButton, ListItem as MuiListItem } from "@material-ui/core"
 import grey from "@material-ui/core/colors/grey"
 
 export const RoomName = styled.div`
@@ -9,6 +9,10 @@ export const RoomName = styled.div`
   text-transform: uppercase;
   font-size: 0.75rem;
   font-weight: 500;
+`
+
+export const ListItem = styled(MuiListItem)`
+  border-radius: 0.25rem;
 `
 
 export const Button = styled(MuiButton)`
