@@ -1,7 +1,7 @@
 import React from "react"
 import AppBar from "./AppBar"
 import Drawer from "./Drawer"
-import { Box, Frame, Content } from "./useStyles"
+import { Box, Frame, Content, TextField } from "./useStyles"
 
 function Home() {
   return (
@@ -11,6 +11,10 @@ function Home() {
         <Drawer />
         <Content>
           <span>Coming soon...</span>
+          <TextField
+            variant="filled"
+            margin="dense"
+            placeholder="Mensaje" />
         </Content>
       </Frame>
     </Box>

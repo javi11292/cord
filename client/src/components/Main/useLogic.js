@@ -1,10 +1,12 @@
 import { useEffect } from "react"
 import { get } from "libraries/fetch"
+import socket from "libraries/socket"
 import useStore from "hooks/useStore"
 
 function useLogic() {
   const addNotification = useStore("notifications", false)
   const [username] = useStore("username")
+  const addMessage = useStore("messages", false)
   const setServers = useStore("servers", false)
   const setRooms = useStore("rooms", false)
 
@@ -22,8 +24,19 @@ function useLogic() {
       setRooms({ username, rooms })
     }
 
-    if (username) getAll()
-  }, [username, addNotification, setServers, setRooms])
+    if (username) {
+      getAll()
+      socket.connect()
+      socket.on("sendMessage", addMessage)
+    }
+
+    return () => {
+      if (username) {
+        socket.off("sendMessage")
+        socket.disconnect()
+      }
+    }
+  }, [username, addNotification, setServers, setRooms, addMessage])
 
   return { username }
 }

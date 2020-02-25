@@ -25,6 +25,10 @@ export default getStore({
       })
     }
   },
+  messages: {
+    state: [],
+    reducer: (state, value) => state.push(value)
+  },
   activeServer: {
     state: null,
     reducer: (state, value) => value
