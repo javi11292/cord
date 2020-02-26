@@ -3,7 +3,7 @@ import { useMediaQuery, useTheme } from "@material-ui/core"
 import { post } from "libraries/fetch"
 
 function refresh() {
-  window.location.assign(process.env.PUBLIC_URL + "/")
+  window.location.assign("/")
 }
 
 function useLogic() {

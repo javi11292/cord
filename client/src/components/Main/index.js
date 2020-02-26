@@ -25,7 +25,7 @@ function Main() {
       {username === null
         ? <Splash />
         : (
-          <BrowserRouter basename={process.env.PUBLIC_URL}>
+          <BrowserRouter>
             <Suspense fallback={null}>
               <Switch>
                 <Route path={["/login", "/register"]}>
