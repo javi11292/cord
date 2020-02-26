@@ -1,11 +1,12 @@
 const express = require("express")
+const compression = require("compression")
+const https = require("https")
+const http = require("http")
+const fs = require("fs")
 const router = require("./router")
 const postgres = require("./postgres")
 const session = require("./middleware/session")
 const socket = require("./socket")
-const https = require("https")
-const http = require("http")
-const fs = require("fs")
 
 function getOptions() {
   try {
@@ -24,6 +25,7 @@ function run() {
   const app = express()
   const options = getOptions()
 
+  app.use(compression())
   app.use(session)
   app.use(express.json())
   app.use(router)

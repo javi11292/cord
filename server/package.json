@@ -11,6 +11,7 @@
     "deploy": "npm run production -- up --build"
   },
   "dependencies": {
+    "compression": "^1.7.4",
     "connect-redis": "^4.0.4",
     "express": "^4.17.0",
     "express-session": "^1.17.0",
