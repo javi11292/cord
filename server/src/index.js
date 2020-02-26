@@ -25,15 +25,22 @@ function run() {
   const app = express()
   const options = getOptions()
 
+  app.use((req, res, next) => {
+    if (options && !req.secure) res.redirect(301, `https://${req.headers.host}${req.url}`)
+    else next()
+  })
+
   app.use(compression())
   app.use(session)
   app.use(express.json())
   app.use(router)
 
+  const server = http.createServer(app).listen(3080, () => console.log("HTTP server started"))
+
   if (options) {
     socket(https.createServer(options, app).listen(3443, () => console.log("HTTPS server started")))
   } else {
-    socket(http.createServer(app).listen(3080, () => console.log("HTTP server started")))
+    socket(server)
   }
 }
 
