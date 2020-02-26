@@ -20,14 +20,23 @@ export default getStore({
     state: {},
     reducer: (state, { username, rooms }) => {
       rooms.forEach(room => {
-        const id = !room.server ? room.users.find(user => user !== username) : room.id
-        state[id] = { ...room, id, name: room.name || id }
+        state[room.id] = { ...room, name: room.name || room.users.find(user => user !== username) }
       })
     }
   },
   messages: {
-    state: [],
-    reducer: (state, value) => state.push(value)
+    state: {},
+    reducer: (state, value) => {
+      value.forEach(response => {
+        const message = response.constructor === String ? JSON.parse(response) : response
+        const channel = state[message.channel]
+        if (!channel) {
+          state[message.channel] = [message]
+        } else {
+          channel.push(message)
+        }
+      })
+    }
   },
   activeServer: {
     state: null,

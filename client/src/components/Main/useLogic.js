@@ -7,8 +7,9 @@ function useLogic() {
   const addNotification = useStore("notifications", false)
   const [username] = useStore("username")
   const addMessage = useStore("messages", false)
+  const addRoom = useStore("rooms", false)
   const setServers = useStore("servers", false)
-  const setRooms = useStore("rooms", false)
+  const [rooms, setRooms] = useStore("rooms")
 
   useEffect(() => {
     async function getAll() {
@@ -27,16 +28,21 @@ function useLogic() {
     if (username) {
       getAll()
       socket.connect()
-      socket.on("sendMessage", addMessage)
+      socket.on("message", addMessage)
+      socket.on("room", rooms => addRoom({ username, rooms }))
     }
 
     return () => {
       if (username) {
-        socket.off("sendMessage")
+        socket.off("message")
         socket.disconnect()
       }
     }
-  }, [username, addNotification, setServers, setRooms, addMessage])
+  }, [username, addNotification, setServers, setRooms, addMessage, addRoom])
+
+  useEffect(() => {
+    Object.keys(rooms).forEach(room => socket.emit("join", room))
+  }, [rooms])
 
   return { username }
 }

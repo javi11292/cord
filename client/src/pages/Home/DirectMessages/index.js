@@ -16,7 +16,7 @@ function DirectMessages() {
       <List>
         {Object.values(rooms).map(({ id, name }) => (
           <ListItem
-            id={id}
+            data-id={id}
             onClick={handleClick}
             button
             key={id}

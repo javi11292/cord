@@ -1,24 +1,43 @@
+const io = require("socket.io")
+const session = require("../middleware/session")
+const { addMessage, getMessages } = require("../redis")
+const events = require("../libraries/events")
+
 function socket(server) {
   const socketServer = io(server)
-  socketServer.on("connect", handleSocket(socketServer))
+  socketServer.use(({ request }, next) => session(request, {}, next))
+  socketServer.on("connect", handleConnect(socketServer))
 }
 
-function handleSocket(socketServer) {
-  return async socket => {
+function handleConnect(socketServer) {
+  return socket => {
     const { session: { username } } = socket.request
 
     function handleMessage(response) {
-      const message = createMessage(response, username)
-      sendMessage(message, message.to)
+      const message = { ...response, date: Date.now() }
       addMessage(message)
+      socketServer.to(message.channel).emit("message", [message])
     }
 
-    function sendMessage(message, to) {
-      socketServer.to(to).emit("message", message)
+    async function handleJoin(channel) {
+      socket.join(channel)
+      socket.emit("message", await getMessages(channel))
     }
 
-    socket.on("getMessages", await getMessages(username))
-    socket.on("sendMessage", handleMessage)
+    function handleRoom(room) {
+      socket.emit("room", [room])
+      handleJoin(room.id)
+    }
+
+    function handleDisconnect() {
+      events.removeListener(username, handleJoin)
+    }
+
+    events.addListener(username, handleRoom)
+
+    socket.on("join", handleJoin)
+    socket.on("disconnect", handleDisconnect)
+    socket.on("message", handleMessage)
   }
 }
 

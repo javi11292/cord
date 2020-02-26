@@ -1,5 +1,7 @@
+import React from "react"
 import styled from "styled-components"
-import { TextField as MuiTextField } from "@material-ui/core"
+import { TextField as MuiTextField, Paper } from "@material-ui/core"
+import grey from "@material-ui/core/colors/grey"
 
 export const Box = styled.div`
   display: grid;
@@ -22,7 +24,34 @@ export const Content = styled.div`
 `
 
 export const Messages = styled.div`
+  overflow-y: scroll;
+  display: flex;
+  flex-direction: column;
+  word-break: break-all;
+  margin: 0.25rem;
+`
 
+export const Message = styled(({ local, ...props }) => <Paper {...props} />)`
+  max-width: 90%;
+  margin: 0.25rem;
+  padding: 0.75rem;
+  display: inline;
+  position: relative;
+  background: ${props => props.local ? props.theme.palette.primary.dark : undefined};
+  align-self: ${props => props.local ? "flex-end" : "flex-start"};
+`
+
+export const InfoPlaceholder = styled.span`
+  width: 5rem;
+  display: inline-block;
+`
+
+export const Info = styled.span`
+  position: absolute;
+  bottom: 0.4rem;
+  right: 0.4rem;
+  font-size: 0.75em;
+  color: ${grey[300]};
 `
 
 export const TextField = styled(MuiTextField)`

@@ -12,7 +12,7 @@ function useLogic() {
   }
 
   function handleClick({ currentTarget }) {
-    setActiveRoom(currentTarget.id)
+    setActiveRoom(currentTarget.dataset.id)
     setOpenDrawer(false)
   }
 

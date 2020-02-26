@@ -36,8 +36,8 @@ function useLogic() {
   }
 
   async function handleClick({ currentTarget }) {
-    if (!rooms[currentTarget.id]) {
-      const response = await post("/room/add", { users: [username, currentTarget.id] })
+    if (!rooms[currentTarget.dataset.id]) {
+      const response = await post("/room/add", { users: [username, currentTarget.dataset.id] })
       if (response.error) {
         addNotification({ action: "push", value: response.error })
         return
@@ -45,7 +45,7 @@ function useLogic() {
       setRooms({ username, rooms: response })
     }
 
-    setActiveRoom(currentTarget.id)
+    setActiveRoom([currentTarget.dataset.id, username].reduce((acc, user) => acc < user ? acc + user : user + acc, ""))
     history.push("/", { openDrawer: false })
   }
 

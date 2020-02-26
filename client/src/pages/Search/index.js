@@ -24,7 +24,7 @@ function Search() {
         ? (
           <List>
             {users.map(({ username }) => (
-              <ListItem button key={username} onClick={handleClick} id={username}>
+              <ListItem button key={username} onClick={handleClick} data-id={username}>
                 <ListItemText primary={username} />
               </ListItem>
             ))}
