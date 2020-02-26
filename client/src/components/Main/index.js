@@ -5,9 +5,13 @@ import Splash from "pages/Splash"
 import useLogic from "./useLogic"
 import { Box } from "./useStyles"
 
-const Home = React.lazy(() => import("pages/Home"))
-const Login = React.lazy(() => import("pages/Login"))
-const Search = React.lazy(() => import("pages/Search"))
+const home = import("pages/Home")
+const login = import("pages/Login")
+const search = import("pages/Search")
+
+const Home = React.lazy(() => home)
+const Login = React.lazy(() => login)
+const Search = React.lazy(() => search)
 
 function Main() {
   const { username } = useLogic()

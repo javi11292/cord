@@ -5,8 +5,11 @@ import Chat from "@material-ui/icons/ChatBubble"
 import useLogic from "./useLogic"
 import { Drawer as CoreDrawer, Servers, Rooms, IconButton, Divider } from "./useStyles"
 
-const DirectMessages = React.lazy(() => import("../DirectMessages"))
-const Server = React.lazy(() => import("../Server"))
+const directMessages = import("../DirectMessages")
+const server = import("../Server")
+
+const DirectMessages = React.lazy(() => directMessages)
+const Server = React.lazy(() => server)
 
 function Drawer() {
   const {
