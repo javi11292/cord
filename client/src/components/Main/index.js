@@ -22,7 +22,7 @@ function Main() {
   return (
     <Box>
       <Notifications />
-      {username === null
+      {username === null || navigator.userAgent === "ReactSnap"
         ? <Splash />
         : (
           <BrowserRouter>
