@@ -43,8 +43,11 @@ export default getStore({
     reducer: (state, value) => value
   },
   activeRoom: {
-    state: null,
-    reducer: (state, value) => value
+    state: localStorage.getItem("activeRoom"),
+    reducer: (state, value) => {
+      localStorage.setItem("activeRoom", value)
+      return value
+    }
   },
   notifications: {
     state: [],
