@@ -41,7 +41,7 @@ export const Message = styled(({ local, ...props }) => <Paper {...props} />)`
   padding: 0.75rem;
   display: inline;
   position: relative;
-  background: ${props => props.local ? props.theme.palette.primary.main : undefined};
+  background: ${props => props.local ? props.theme.palette.primary.dark : undefined};
   align-self: ${props => props.local ? "flex-end" : "flex-start"};
 `
 
