@@ -25,6 +25,8 @@ function Drawer() {
     handleChange,
     handleKeyDown,
     handleServerClick,
+    inputRef,
+    handleDialogOpen,
   } = useLogic()
 
   return (
@@ -34,10 +36,10 @@ function Drawer() {
       onClose={onClose}
       onOpen={onClose}
       variant={isDesktop ? "permanent" : "temporary"}>
-      <Dialog open={showDialog} onClose={toggleDialog}>
+      <Dialog open={showDialog} onClose={toggleDialog} onEntered={handleDialogOpen}>
         <DialogContent>
           <TextField
-            autoFocus
+            inputRef={inputRef}
             autoComplete="off"
             label="Nombre del servidor"
             margin="dense"
@@ -83,7 +85,7 @@ function Drawer() {
             : <Server id={activeServer} />}
         </Suspense>
       </Rooms>
-    </CoreDrawer>
+    </CoreDrawer >
   )
 }
 

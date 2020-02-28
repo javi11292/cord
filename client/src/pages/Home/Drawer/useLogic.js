@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react"
+import { useEffect, useState, useRef } from "react"
 import { useLocation } from "react-router-dom"
 import { useMediaQuery, useTheme } from "@material-ui/core"
 import useStore from "hooks/useStore"
@@ -6,6 +6,7 @@ import { post } from "libraries/fetch"
 import { NOTIFICATION } from "libraries/constants"
 
 function useLogic() {
+  const inputRef = useRef()
   const location = useLocation()
   const [activeServer, setActiveServer] = useStore("activeServer")
   const [serverName, setServerName] = useState("")
@@ -61,6 +62,10 @@ function useLogic() {
     setActiveServer(currentTarget.value)
   }
 
+  function handleDialogOpen() {
+    if (showDialog) inputRef.current.focus()
+  }
+
   return {
     activeServer,
     isDesktop,
@@ -74,6 +79,8 @@ function useLogic() {
     handleChange,
     handleKeyDown,
     handleServerClick,
+    inputRef,
+    handleDialogOpen,
   }
 }
 

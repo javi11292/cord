@@ -1,6 +1,6 @@
 import React from "react"
 import styled from "styled-components"
-import { TextField as MuiTextField, Paper } from "@material-ui/core"
+import { TextField as MuiTextField, Paper, IconButton as MuiIconButton } from "@material-ui/core"
 import grey from "@material-ui/core/colors/grey"
 
 export const Box = styled.div`
@@ -14,11 +14,15 @@ export const Frame = styled.div`
     grid-template-columns: auto 1fr;
   }
   display: grid;
-  overflow: auto;
+  overflow: hidden;
+`
+
+export const IconButton = styled(MuiIconButton)`
+  padding: 0.5rem;
 `
 
 export const Content = styled.div`
-  overflow: auto;
+  overflow: hidden;
   display: grid;
   grid-template-rows: 1fr auto;
 `

@@ -20,6 +20,7 @@ function Login() {
         <Title variant="h4">{isLogin ? "Login" : "Registrarse"}</Title>
 
         <TextField
+          autoFocus
           variant="filled"
           inputRef={addRef}
           autoComplete="off"

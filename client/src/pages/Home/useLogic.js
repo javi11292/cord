@@ -42,6 +42,7 @@ function useLogic() {
   }
 
   function send() {
+    if (!text) return
     socket.emit("message", { from: username, channel: activeRoom, text, })
     setText("")
   }
@@ -60,6 +61,7 @@ function useLogic() {
     inputRef,
     activeRoom,
     messages: roomMessages,
+    send,
   }
 }
 

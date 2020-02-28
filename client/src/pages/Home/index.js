@@ -1,9 +1,11 @@
 import React from "react"
 import { format } from "date-fns"
+import { InputAdornment } from "@material-ui/core"
+import Send from "@material-ui/icons/Send"
 import AppBar from "./AppBar"
 import Drawer from "./Drawer"
 import useLogic from "./useLogic"
-import { Box, Frame, Content, TextField, Messages, Message, InfoPlaceholder, Info } from "./useStyles"
+import { Box, Frame, Content, TextField, Messages, Message, InfoPlaceholder, Info, IconButton } from "./useStyles"
 
 function Home() {
   const {
@@ -16,6 +18,7 @@ function Home() {
     inputRef,
     activeRoom,
     messages,
+    send,
   } = useLogic()
 
   return (
@@ -37,6 +40,15 @@ function Home() {
               ))}
             </Messages>
             <TextField
+              InputProps={{
+                endAdornment: (
+                  <InputAdornment position="end">
+                    <IconButton onClick={send}>
+                      <Send />
+                    </IconButton>
+                  </InputAdornment>
+                )
+              }}
               autoFocus
               inputRef={inputRef}
               value={text}
