@@ -20,8 +20,8 @@ import useLogic from "./useLogic"
 const theme = createMuiTheme({
   palette: {
     type: "dark",
-    primary: { main: green[600] },
-    secondary: { main: blue[600] },
+    primary: { main: green[700] },
+    secondary: { main: blue[700] },
   },
 })
 
