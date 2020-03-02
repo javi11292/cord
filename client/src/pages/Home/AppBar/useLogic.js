@@ -1,6 +1,7 @@
 import useStore from "hooks/useStore"
 import { useMediaQuery, useTheme } from "@material-ui/core"
 import { post } from "libraries/fetch"
+import { makeCall } from "libraries/webrtc"
 
 function refresh() {
   window.location.assign("/")
@@ -9,6 +10,7 @@ function refresh() {
 function useLogic() {
   const addNotification = useStore("notifications", false)
   const setOpenDrawer = useStore("openDrawer", false)
+  const [activeRoom] = useStore("activeRoom")
   const theme = useTheme()
   const isDesktop = useMediaQuery(theme.breakpoints.up("sm"))
 
@@ -25,7 +27,13 @@ function useLogic() {
     setOpenDrawer(true)
   }
 
+  function call() {
+    makeCall(activeRoom)
+  }
+
   return {
+    call,
+    activeRoom,
     logout,
     refresh,
     toggleDrawer,

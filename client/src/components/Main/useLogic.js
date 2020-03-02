@@ -1,6 +1,7 @@
 import { useEffect } from "react"
 import { get } from "libraries/fetch"
 import socket from "libraries/socket"
+import { handleOffer } from "libraries/webrtc"
 import useStore from "hooks/useStore"
 
 function useLogic() {
@@ -29,12 +30,13 @@ function useLogic() {
       getAll()
       socket.connect()
       socket.on("message", addMessage)
+      socket.on("offer", handleOffer)
       socket.on("room", rooms => addRoom({ username, rooms }))
     }
 
     return () => {
       if (username) {
-        socket.off("message")
+        socket.off()
         socket.disconnect()
       }
     }

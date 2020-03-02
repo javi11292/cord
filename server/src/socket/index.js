@@ -33,11 +33,27 @@ function handleConnect(socketServer) {
       events.removeListener(username, handleJoin)
     }
 
+    function handleOffer(message) {
+      socket.broadcast.to(message.channel).emit("offer", message)
+    }
+
+    function handleAnswer(message) {
+      socket.broadcast.to(message.channel).emit("answer#" + message.channel, message.answer)
+    }
+
+    function handleCandidate(message) {
+      socket.broadcast.to(message.channel).emit("candidate#" + message.channel, message.candidate)
+    }
+
     events.addListener(username, handleRoom)
 
+    socket.join(username)
     socket.on("join", handleJoin)
     socket.on("disconnect", handleDisconnect)
     socket.on("message", handleMessage)
+    socket.on("offer", handleOffer)
+    socket.on("answer", handleAnswer)
+    socket.on("candidate", handleCandidate)
   }
 }
 
