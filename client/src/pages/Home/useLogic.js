@@ -66,7 +66,7 @@ function useLogic() {
   }
 
   function handleScroll({ currentTarget: { scrollHeight, scrollTop, offsetHeight } }) {
-    scrolled.current = scrollTop !== scrollHeight - offsetHeight
+    scrolled.current = Math.round(scrollTop) !== scrollHeight - offsetHeight
   }
 
   return {

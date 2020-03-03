@@ -8,7 +8,6 @@ function useLogic() {
   const [username] = useStore("username")
   const setOffer = useStore("offer", false)
   const addMessage = useStore("messages", false)
-  const addRoom = useStore("rooms", false)
   const setServers = useStore("servers", false)
   const [rooms, setRooms] = useStore("rooms")
 
@@ -31,7 +30,7 @@ function useLogic() {
       socket.connect()
       socket.on("message", addMessage)
       socket.on("offer", setOffer)
-      socket.on("room", rooms => addRoom({ username, rooms }))
+      socket.on("room", rooms => setRooms({ username, rooms }))
     }
 
     return () => {
@@ -40,7 +39,7 @@ function useLogic() {
         socket.disconnect()
       }
     }
-  }, [username, addNotification, setServers, setRooms, addMessage, addRoom, setOffer])
+  }, [username, addNotification, setServers, setRooms, addMessage, setOffer])
 
   useEffect(() => {
     Object.keys(rooms).forEach(room => socket.emit("join", room))

@@ -18,23 +18,26 @@ function useLogic() {
 
   useEffect(() => {
     if (!room) return
-    if (connection) {
-      setMessage({ state: connection.connectionState, room })
+    if (!connection) {
+      setMessage({ state: "offer", room })
+    } else {
+      setMessage({ state: offer ? "offer" : connection.connectionState, room })
       addListener(connection, "connected", () => {
         setMessage({ state: connection.connectionState, room })
       })
-    } else {
-      setMessage({ state: "offer", room })
     }
-  }, [room, connection])
+  }, [room, connection, offer])
 
   function handleClick({ currentTarget }) {
     if (currentTarget.dataset.call) {
-      setConnection(answerCall(offer, () => setConnection(null)))
+      setConnection(answerCall(offer, () => {
+        setConnection(null)
+        setOffer(null)
+      }))
     } else {
       if (connection) connection.stop()
+      setOffer(null)
     }
-    setOffer(null)
   }
 
   function handleExited() {
