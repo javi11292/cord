@@ -8,6 +8,7 @@ function refresh() {
 }
 
 function useLogic() {
+  const setConnection = useStore("connection", false)
   const addNotification = useStore("notifications", false)
   const setOpenDrawer = useStore("openDrawer", false)
   const [activeRoom] = useStore("activeRoom")
@@ -27,12 +28,12 @@ function useLogic() {
     setOpenDrawer(true)
   }
 
-  function call() {
-    makeCall(activeRoom)
+  async function handleCall() {
+    setConnection(makeCall(activeRoom, () => setConnection(null)))
   }
 
   return {
-    call,
+    handleCall,
     activeRoom,
     logout,
     refresh,

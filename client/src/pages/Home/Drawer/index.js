@@ -1,6 +1,6 @@
 import React, { Suspense } from "react"
 import { Tooltip, Icon, Dialog, DialogContent, DialogActions, Button, TextField } from "@material-ui/core"
-import Add from "@material-ui/icons/Add"
+//import Add from "@material-ui/icons/Add"
 import Chat from "@material-ui/icons/ChatBubble"
 import useLogic from "./useLogic"
 import { Drawer as CoreDrawer, Servers, Rooms, IconButton, Divider } from "./useStyles"
@@ -71,11 +71,11 @@ function Drawer() {
           </Tooltip>
         ))}
 
-        <Tooltip title="Crear servidor" placement="right">
+        {/*<Tooltip title="Crear servidor" placement="right">
           <IconButton color="primary" onClick={toggleDialog}>
             <Add />
           </IconButton>
-        </Tooltip>
+        </Tooltip>*/}
       </Servers>
 
       <Rooms>

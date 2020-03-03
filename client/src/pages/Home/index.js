@@ -19,6 +19,7 @@ function Home() {
     activeRoom,
     messages,
     send,
+    streamRef,
   } = useLogic()
 
   return (
@@ -39,6 +40,7 @@ function Home() {
                 </Message>
               ))}
             </Messages>
+            <video ref={streamRef} width="50px"/>
             <TextField
               InputProps={{
                 endAdornment: (

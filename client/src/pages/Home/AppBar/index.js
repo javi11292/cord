@@ -17,7 +17,7 @@ function AppBar() {
     toggleDrawer,
     isDesktop,
     activeRoom,
-    call,
+    handleCall,
   } = useLogic()
 
   return (
@@ -34,7 +34,7 @@ function AppBar() {
         <Buttons>
           {activeRoom &&
             <Tooltip title="Llamar" placement="bottom">
-              <IconButton color="inherit" onClick={call}>
+              <IconButton color="inherit" onClick={handleCall}>
                 <Call />
               </IconButton>
             </Tooltip>

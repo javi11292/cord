@@ -1,6 +1,7 @@
 import React, { Suspense } from "react"
 import { BrowserRouter, Switch, Route, Redirect } from "react-router-dom"
 import Notifications from "components/Notifications"
+import Calls from "components/Calls"
 import Splash from "pages/Splash"
 import useLogic from "./useLogic"
 import { Box } from "./useStyles"
@@ -22,6 +23,7 @@ function Main() {
   return (
     <Box>
       <Notifications />
+      <Calls />
       {username === null || navigator.userAgent === "ReactSnap"
         ? <Splash />
         : (

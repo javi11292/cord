@@ -2,6 +2,14 @@ import getStore from "libraries/store"
 import { NOTIFICATION } from "libraries/constants"
 
 export default getStore({
+  offer: {
+    state: null,
+    reducer: (state, value) => value,
+  },
+  connection: {
+    state: null,
+    reducer: (state, value) => value,
+  },
   openDrawer: {
     state: false,
     reducer: (state, value) => value,

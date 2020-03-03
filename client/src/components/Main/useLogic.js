@@ -1,12 +1,12 @@
 import { useEffect } from "react"
 import { get } from "libraries/fetch"
 import socket from "libraries/socket"
-import { handleOffer } from "libraries/webrtc"
 import useStore from "hooks/useStore"
 
 function useLogic() {
   const addNotification = useStore("notifications", false)
   const [username] = useStore("username")
+  const setOffer = useStore("offer", false)
   const addMessage = useStore("messages", false)
   const addRoom = useStore("rooms", false)
   const setServers = useStore("servers", false)
@@ -30,7 +30,7 @@ function useLogic() {
       getAll()
       socket.connect()
       socket.on("message", addMessage)
-      socket.on("offer", handleOffer)
+      socket.on("offer", setOffer)
       socket.on("room", rooms => addRoom({ username, rooms }))
     }
 
@@ -40,7 +40,7 @@ function useLogic() {
         socket.disconnect()
       }
     }
-  }, [username, addNotification, setServers, setRooms, addMessage, addRoom])
+  }, [username, addNotification, setServers, setRooms, addMessage, addRoom, setOffer])
 
   useEffect(() => {
     Object.keys(rooms).forEach(room => socket.emit("join", room))
