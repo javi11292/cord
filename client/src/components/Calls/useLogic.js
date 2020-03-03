@@ -1,41 +1,44 @@
 import { useState, useEffect } from "react"
 import useStore from "hooks/useStore"
+import { answerCall, addListener } from "libraries/webrtc"
 
 function useLogic() {
   const [message, setMessage] = useState()
   const [open, setOpen] = useState(false)
-  const [connection] = useStore("connection")
-  const [offer] = useStore("offer")
+  const [connection, setConnection] = useStore("connection")
+  const [offer, setOffer] = useStore("offer")
   const [rooms] = useStore("rooms")
 
-  const roomId = connection ? connection.channel : offer?.channel
-  const room = roomId ? rooms[roomId].name : null
+  const roomId = connection?.channel || offer?.channel
+  const room = rooms[roomId]?.name
 
   useEffect(() => {
     setOpen(!!room)
   }, [room])
 
   useEffect(() => {
-    if (!open) return
-    setMessage(message => !message
-      ? {
-        state: connection ? connection.connectionState : "offer",
-        room,
-      }
-      : message
-    )
-  }, [open, room, connection])
+    if (!room) return
+    if (connection) {
+      setMessage({ state: connection.connectionState, room })
+      addListener(connection, "connected", () => {
+        setMessage({ state: connection.connectionState, room })
+      })
+    } else {
+      setMessage({ state: "offer", room })
+    }
+  }, [room, connection])
 
   function handleClick({ currentTarget }) {
     if (currentTarget.dataset.call) {
-      console.log("call")
+      setConnection(answerCall(offer, () => setConnection(null)))
     } else {
-      connection.stop()
+      if (connection) connection.stop()
     }
+    setOffer(null)
   }
 
   function handleExited() {
-    if (!open) setMessage()
+    setMessage()
   }
 
   return {

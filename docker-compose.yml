@@ -6,3 +6,5 @@ services:
     image: redis
   postgres:
     image: postgres
+    environment:
+      POSTGRES_PASSWORD: postgres

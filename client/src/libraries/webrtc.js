@@ -13,7 +13,6 @@ function createConnection(channel, handleConnected, handleDisconnected) {
   })
 
   peerConnection.addEventListener("connectionstatechange", () => {
-    console.log(peerConnection.connectionState)
     if (peerConnection.connectionState === "connected" && handleConnected) handleConnected()
 
     if (peerConnection.connectionState === "disconnected" && handleDisconnected) peerConnection.stop()
@@ -46,7 +45,13 @@ function stopTrack(track) {
   track.stop()
 }
 
-export function makeCall(channel, callback) {
+export function addListener(connection, state, callback) {
+  connection.addEventListener("connectionstatechange", () => {
+    if (connection.connectionState === state && callback) callback()
+  })
+}
+
+export function makeCall(channel, disconnectedCallback) {
   function handleConnected() {
     clearTimeout(timeout)
     tracks.forEach(notifyTrack)
@@ -55,12 +60,12 @@ export function makeCall(channel, callback) {
   function handleDisconnected() {
     socket.off("answer#" + channel)
     tracks.forEach(stopTrack)
-    if (callback) callback()
+    if (disconnectedCallback) disconnectedCallback()
   }
 
   async function run() {
     const devices = await getDevices()
-    const stream = await navigator.mediaDevices.getUserMedia(devices).catch(peerConnection.stop)
+    const stream = await navigator.mediaDevices.getUserMedia(devices)
     if (!stream) return
     tracks = stream.getTracks()
     tracks.forEach(track => {
@@ -85,12 +90,12 @@ export function makeCall(channel, callback) {
     peerConnection.stop()
   }, 10000)
 
-  run().catch(() => { })
+  run().catch(peerConnection.stop)
 
   return peerConnection
 }
 
-export function answerCall(message, callback) {
+export function answerCall(message, disconnectedCallback) {
   async function run() {
     peerConnection.addEventListener("track", ({ track }) => notifyTrack(track))
     peerConnection.setRemoteDescription(new RTCSessionDescription(message.offer))
@@ -100,9 +105,9 @@ export function answerCall(message, callback) {
     socket.emit("answer", { channel: message.channel, answer })
   }
 
-  const peerConnection = createConnection(message.channel, null, callback)
+  const peerConnection = createConnection(message.channel, null, disconnectedCallback)
 
-  run().catch(() => { })
+  run().catch(peerConnection.stop)
 
   return peerConnection
 }

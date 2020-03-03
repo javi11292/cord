@@ -12,6 +12,11 @@ function useLogic() {
   const [activeRoom] = useStore("activeRoom")
   const [text, setText] = useState("")
   const [messages] = useStore("messages")
+  const [connection] = useStore("connection")
+
+  useEffect(() => {
+    if (!connection && streamRef.current) streamRef.current.srcObject = null
+  }, [connection])
 
   useEffect(() => {
     setRoomMessages((messages[activeRoom] || []).slice(-50))
@@ -31,7 +36,6 @@ function useLogic() {
         const stream = streamRef.current.srcObject ? new MediaStream(streamRef.current.srcObject) : new MediaStream()
         stream.addTrack(track)
         streamRef.current.srcObject = stream
-        streamRef.current.play()
       }
     }
 

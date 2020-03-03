@@ -21,7 +21,6 @@ function Content({ message, handleClick }) {
 
       return (
         <SnackbarContent
-          variant="connection"
           action={action}
           message={`Llamada de ${message.room}`} />
       )
@@ -36,6 +35,7 @@ function Content({ message, handleClick }) {
 
       return (
         <SnackbarContent
+          variant="connection"
           action={action}
           message={message.room} />
       )

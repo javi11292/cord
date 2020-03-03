@@ -7,6 +7,7 @@ const room = require("./room")
 const pool = new Pool({
   host: "postgres",
   user: "postgres",
+  password: "postgres",
 })
 
 module.exports = {
