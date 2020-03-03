@@ -11,6 +11,8 @@ function useLogic() {
   const setConnection = useStore("connection", false)
   const addNotification = useStore("notifications", false)
   const setOpenDrawer = useStore("openDrawer", false)
+  const [connection] = useStore("connection")
+  const [offer] = useStore("offer")
   const [activeRoom] = useStore("activeRoom")
   const theme = useTheme()
   const isDesktop = useMediaQuery(theme.breakpoints.up("sm"))
@@ -33,6 +35,7 @@ function useLogic() {
   }
 
   return {
+    hasActiveCall: !!connection || !!offer,
     handleCall,
     activeRoom,
     logout,

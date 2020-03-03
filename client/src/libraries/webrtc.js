@@ -18,6 +18,8 @@ function createConnection(channel, handleConnected, handleDisconnected) {
     if (peerConnection.connectionState === "disconnected" && handleDisconnected) peerConnection.stop()
   })
 
+  peerConnection.addEventListener("track", ({ track }) => notifyTrack(track))
+
   peerConnection.stop = () => {
     peerConnection.close()
     socket.off("candidate#" + channel)
@@ -51,10 +53,28 @@ export function addListener(connection, state, callback) {
   })
 }
 
+async function getStream() {
+  const devices = await getDevices()
+  const stream = await navigator.mediaDevices.getUserMedia(devices)
+  if (!stream) return
+  return stream
+}
+
+async function addTracks(connection) {
+  const stream = await getStream()
+  if (!stream) return
+  const tracks = stream.getTracks()
+  tracks.forEach(track => {
+    connection.addTrack(track, stream)
+  })
+  return tracks
+}
+
 export function makeCall(channel, disconnectedCallback) {
+  let tracks = []
+
   function handleConnected() {
     clearTimeout(timeout)
-    tracks.forEach(notifyTrack)
   }
 
   function handleDisconnected() {
@@ -64,13 +84,7 @@ export function makeCall(channel, disconnectedCallback) {
   }
 
   async function run() {
-    const devices = await getDevices()
-    const stream = await navigator.mediaDevices.getUserMedia(devices)
-    if (!stream) return
-    tracks = stream.getTracks()
-    tracks.forEach(track => {
-      peerConnection.addTrack(track, stream)
-    })
+    tracks = await addTracks(peerConnection)
 
     socket.once("answer#" + channel, answer => {
       peerConnection.setRemoteDescription(new RTCSessionDescription(answer))
@@ -80,8 +94,6 @@ export function makeCall(channel, disconnectedCallback) {
     await peerConnection.setLocalDescription(offer)
     socket.emit("offer", { channel, offer })
   }
-
-  let tracks = []
 
   const peerConnection = createConnection(channel, handleConnected, handleDisconnected)
 
@@ -96,8 +108,16 @@ export function makeCall(channel, disconnectedCallback) {
 }
 
 export function answerCall(message, disconnectedCallback) {
+  let tracks = []
+
+  function handleDisconnected() {
+    tracks.forEach(stopTrack)
+    if (disconnectedCallback) disconnectedCallback()
+  }
+
   async function run() {
-    peerConnection.addEventListener("track", ({ track }) => notifyTrack(track))
+    tracks = await addTracks(peerConnection)
+
     peerConnection.setRemoteDescription(new RTCSessionDescription(message.offer))
 
     const answer = await peerConnection.createAnswer()
@@ -105,7 +125,7 @@ export function answerCall(message, disconnectedCallback) {
     socket.emit("answer", { channel: message.channel, answer })
   }
 
-  const peerConnection = createConnection(message.channel, null, disconnectedCallback)
+  const peerConnection = createConnection(message.channel, null, handleDisconnected)
 
   run().catch(peerConnection.stop)
 
