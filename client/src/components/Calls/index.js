@@ -1,7 +1,7 @@
 import React from "react"
 import { Snackbar, IconButton } from "@material-ui/core"
-import Call from "@material-ui/icons/Call"
-import CallEnd from "@material-ui/icons/CallEnd"
+import Call from "@material-ui/icons/PhoneEnabled"
+import CallEnd from "@material-ui/icons/PhoneDisabled"
 import useLogic from "./useLogic"
 import { SnackbarContent } from "./useStyles"
 
