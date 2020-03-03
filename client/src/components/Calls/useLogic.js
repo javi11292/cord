@@ -2,7 +2,7 @@ import { useState, useEffect } from "react"
 import useStore from "hooks/useStore"
 
 function useLogic() {
-  const [message, setMessage] = useState({})
+  const [message, setMessage] = useState()
   const [open, setOpen] = useState(false)
   const [connection] = useStore("connection")
   const [offer] = useStore("offer")
@@ -17,10 +17,13 @@ function useLogic() {
 
   useEffect(() => {
     if (!open) return
-    setMessage({
-      state: connection ? connection.connectionState : "offer",
-      room,
-    })
+    setMessage(message => !message
+      ? {
+        state: connection ? connection.connectionState : "offer",
+        room,
+      }
+      : message
+    )
   }, [open, room, connection])
 
   function handleClick({ currentTarget }) {
@@ -32,14 +35,14 @@ function useLogic() {
   }
 
   function handleExited() {
-    if (!open) setMessage({})
+    if (!open) setMessage()
   }
 
   return {
     handleClick,
     handleExited,
     open,
-    message,
+    message: message || {},
   }
 }
 

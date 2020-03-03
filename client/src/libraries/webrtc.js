@@ -85,7 +85,7 @@ export function makeCall(channel, callback) {
     peerConnection.stop()
   }, 10000)
 
-  run()
+  run().catch(() => { })
 
   return peerConnection
 }
@@ -102,7 +102,7 @@ export function answerCall(message, callback) {
 
   const peerConnection = createConnection(message.channel, null, callback)
 
-  run()
+  run().catch(() => { })
 
   return peerConnection
 }
