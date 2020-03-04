@@ -100,7 +100,7 @@ export function makeCall(channel, disconnectedCallback) {
   const timeout = setTimeout(() => {
     console.log("timeout")
     peerConnection.stop()
-  }, 10000)
+  }, 30000)
 
   run().catch(peerConnection.stop)
 
