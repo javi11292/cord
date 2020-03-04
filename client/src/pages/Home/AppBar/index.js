@@ -12,7 +12,7 @@ import { Buttons, Title, AppBar as CoreAppBar } from "./useStyles"
 
 function AppBar() {
   const {
-    hasActiveCall,
+    hasActiveConnection,
     logout,
     refresh,
     toggleDrawer,
@@ -33,7 +33,7 @@ function AppBar() {
         <Title variant="h6" onClick={refresh}>Cord</Title>
 
         <Buttons>
-          {activeRoom && !hasActiveCall &&
+          {activeRoom && !hasActiveConnection &&
             <Tooltip title="Llamar" placement="bottom">
               <IconButton color="inherit" onClick={handleCall}>
                 <Call />

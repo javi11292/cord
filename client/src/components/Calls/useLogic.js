@@ -6,10 +6,10 @@ function useLogic() {
   const [message, setMessage] = useState()
   const [open, setOpen] = useState(false)
   const [connection, setConnection] = useStore("connection")
-  const [offer, setOffer] = useStore("offer")
+  const [incomingConnection, setIncomingConnection] = useStore("incomingConnection")
   const [rooms] = useStore("rooms")
 
-  const roomId = connection?.channel || offer?.channel
+  const roomId = connection?.channel || incomingConnection?.channel
   const room = rooms[roomId]?.name
 
   useEffect(() => {
@@ -19,24 +19,25 @@ function useLogic() {
   useEffect(() => {
     if (!room) return
     if (!connection) {
-      setMessage({ state: "offer", room })
+      setMessage({ state: "incomingConnection", room })
     } else {
-      setMessage({ state: offer ? "offer" : connection.connectionState, room })
+      setMessage({ state: incomingConnection ? "incomingConnection" : connection.connectionState, room })
       addListener(connection, "connected", () => {
         setMessage({ state: connection.connectionState, room })
       })
     }
-  }, [room, connection, offer])
+  }, [room, connection, incomingConnection])
 
   function handleClick({ currentTarget }) {
     if (currentTarget.dataset.call) {
-      setConnection(answerCall(offer, () => {
+      setIncomingConnection(null)
+
+      setConnection(answerCall(incomingConnection, () => {
         setConnection(null)
-        setOffer(null)
       }))
     } else {
       if (connection) connection.stop()
-      setOffer(null)
+      setIncomingConnection(null)
     }
   }
 

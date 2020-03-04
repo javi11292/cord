@@ -2,7 +2,7 @@ import getStore from "libraries/store"
 import { NOTIFICATION } from "libraries/constants"
 
 export default getStore({
-  offer: {
+  incomingConnection: {
     state: null,
     reducer: (state, value) => value,
   },

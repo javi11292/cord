@@ -1,35 +1,6 @@
-import socket from "libraries/socket"
+import Peer from "peerjs"
 
-const configuration = { iceServers: [{ urls: "stun:stun.l.google.com:19302" }] }
-
-function createConnection(channel, handleConnected, handleDisconnected) {
-  const peerConnection = new RTCPeerConnection(configuration)
-  socket.on("candidate#" + channel, candidate => {
-    peerConnection.addIceCandidate(candidate)
-  })
-
-  peerConnection.addEventListener("icecandidate", ({ candidate }) => {
-    if (candidate) socket.emit("candidate", { channel, candidate })
-  })
-
-  peerConnection.addEventListener("connectionstatechange", () => {
-    if (peerConnection.connectionState === "connected" && handleConnected) handleConnected()
-
-    if (peerConnection.connectionState === "disconnected" && handleDisconnected) peerConnection.stop()
-  })
-
-  peerConnection.addEventListener("track", ({ track }) => notifyTrack(track))
-
-  peerConnection.stop = () => {
-    peerConnection.close()
-    socket.off("candidate#" + channel)
-    if (handleDisconnected) handleDisconnected()
-  }
-
-  peerConnection.channel = channel
-
-  return peerConnection
-}
+const peer = new Peer()
 
 async function getDevices() {
   return (await navigator.mediaDevices.enumerateDevices()).reduce((acc, device) => {
@@ -39,95 +10,31 @@ async function getDevices() {
   }, { video: false, audio: false })
 }
 
-function notifyTrack(track) {
-  window.dispatchEvent(new CustomEvent("track", { detail: track }))
-}
-
-function stopTrack(track) {
-  track.stop()
-}
-
-export function addListener(connection, state, callback) {
-  connection.addEventListener("connectionstatechange", () => {
-    if (connection.connectionState === state && callback) callback()
-  })
-}
-
 async function getStream() {
   const devices = await getDevices()
-  const stream = await navigator.mediaDevices.getUserMedia(devices)
-  if (!stream) return
-  return stream
+  return await navigator.mediaDevices.getUserMedia(devices)
 }
 
-async function addTracks(connection) {
+function handleStream(stream) {
+  console.log("GOT STREAM")
+}
+
+export async function makeCall(peer, room, openCallback, closeCallback) {
   const stream = await getStream()
-  if (!stream) return
-  const tracks = stream.getTracks()
-  tracks.forEach(track => {
-    connection.addTrack(track, stream)
-  })
-  return tracks
+  const calls = room.users.reduce((acc, user) => {
+    if (user === peer.id) return acc
+    const call = peer.call(user, stream)
+    call.on("stream", stream => handleStream(stream))
+    acc.push(call)
+    return acc
+  }, [])
+
+  return calls
 }
 
-export function makeCall(channel, disconnectedCallback) {
-  let tracks = []
-
-  function handleConnected() {
-    clearTimeout(timeout)
-  }
-
-  function handleDisconnected() {
-    socket.off("answer#" + channel)
-    tracks.forEach(stopTrack)
-    if (disconnectedCallback) disconnectedCallback()
-  }
-
-  async function run() {
-    tracks = await addTracks(peerConnection)
-
-    socket.once("answer#" + channel, answer => {
-      peerConnection.setRemoteDescription(new RTCSessionDescription(answer))
-    })
-
-    const offer = await peerConnection.createOffer()
-    await peerConnection.setLocalDescription(offer)
-    socket.emit("offer", { channel, offer })
-  }
-
-  const peerConnection = createConnection(channel, handleConnected, handleDisconnected)
-
-  const timeout = setTimeout(() => {
-    console.log("timeout")
-    peerConnection.stop()
-  }, 30000)
-
-  run().catch(peerConnection.stop)
-
-  return peerConnection
-}
-
-export function answerCall(message, disconnectedCallback) {
-  let tracks = []
-
-  function handleDisconnected() {
-    tracks.forEach(stopTrack)
-    if (disconnectedCallback) disconnectedCallback()
-  }
-
-  async function run() {
-    tracks = await addTracks(peerConnection)
-
-    peerConnection.setRemoteDescription(new RTCSessionDescription(message.offer))
-
-    const answer = await peerConnection.createAnswer()
-    await peerConnection.setLocalDescription(answer)
-    socket.emit("answer", { channel: message.channel, answer })
-  }
-
-  const peerConnection = createConnection(message.channel, null, handleDisconnected)
-
-  run().catch(peerConnection.stop)
-
-  return peerConnection
+export async function answerCall(call) {
+  const stream = await getStream()
+  call.answer(stream)
+  call.on("stream", stream => handleStream(stream))
+  return call
 }

@@ -3,6 +3,7 @@ const compression = require("compression")
 const https = require("https")
 const http = require("http")
 const fs = require("fs")
+const { ExpressPeerServer } = require("peer")
 const router = require("./router")
 const postgres = require("./postgres")
 const session = require("./middleware/session")
@@ -24,23 +25,27 @@ function initialize() {
 function run() {
   const app = express()
   const options = getOptions()
+  const httpServer = http.createServer(app)
+  const httpsServer = options ? https.createServer(options, app) : null
 
   app.use((req, res, next) => {
-    if (options && !req.secure) res.redirect(301, `https://${req.headers.host}${req.url}`)
+    if (httpsServer && !req.secure) res.redirect(301, `https://${req.headers.host}${req.url}`)
     else next()
   })
 
+  app.use("/peer", ExpressPeerServer(httpsServer || httpServer, options))
   app.use(compression())
   app.use(session)
   app.use(express.json())
   app.use(router)
 
-  const server = http.createServer(app).listen(3080, () => console.log("HTTP server started"))
+  httpServer.listen(3080, () => console.log("HTTP server started"))
 
   if (options) {
-    socket(https.createServer(options, app).listen(3443, () => console.log("HTTPS server started")))
+    httpsServer.listen(3443, () => console.log("HTTPS server started"))
+    socket(httpsServer)
   } else {
-    socket(server)
+    socket(httpServer)
   }
 }
 

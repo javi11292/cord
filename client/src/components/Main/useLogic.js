@@ -6,7 +6,6 @@ import useStore from "hooks/useStore"
 function useLogic() {
   const addNotification = useStore("notifications", false)
   const [username] = useStore("username")
-  const setOffer = useStore("offer", false)
   const addMessage = useStore("messages", false)
   const setServers = useStore("servers", false)
   const [rooms, setRooms] = useStore("rooms")
@@ -29,7 +28,6 @@ function useLogic() {
       getAll()
       socket.connect()
       socket.on("message", addMessage)
-      socket.on("offer", setOffer)
       socket.on("room", rooms => setRooms({ username, rooms }))
     }
 
@@ -39,7 +37,7 @@ function useLogic() {
         socket.disconnect()
       }
     }
-  }, [username, addNotification, setServers, setRooms, addMessage, setOffer])
+  }, [username, addNotification, setServers, setRooms, addMessage])
 
   useEffect(() => {
     Object.keys(rooms).forEach(room => socket.emit("join", room))
