@@ -1,8 +1,9 @@
-import { useEffect, useState } from "react"
+import { useRef, useEffect, useState } from "react"
 import { get } from "libraries/fetch"
 import useStore from "hooks/useStore"
 
 function useLogic() {
+  const hasAnimation = useRef()
   const [animationEnd, setAnimationEnd] = useState(false)
   const setUserName = useStore("username", false)
   const [sessionResponse, setSessionResponse] = useState()
@@ -17,7 +18,7 @@ function useLogic() {
   }, [])
 
   useEffect(() => {
-    if (animationEnd) {
+    if (!hasAnimation.current || animationEnd) {
       setUserName(sessionResponse)
     }
   }, [animationEnd, sessionResponse, setUserName])
@@ -26,7 +27,11 @@ function useLogic() {
     setAnimationEnd(true)
   }
 
-  return { handleAnimationEnd }
+  function handleAnimationStart() {
+    hasAnimation.current = true
+  }
+
+  return { handleAnimationEnd, handleAnimationStart }
 }
 
 export default useLogic

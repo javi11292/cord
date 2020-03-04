@@ -1,10 +1,12 @@
 import { useEffect } from "react"
+import Peer from "peerjs"
 import { get } from "libraries/fetch"
 import socket from "libraries/socket"
 import useStore from "hooks/useStore"
 
 function useLogic() {
   const addNotification = useStore("notifications", false)
+  const setPeer = useStore("peer", false)
   const [username] = useStore("username")
   const addMessage = useStore("messages", false)
   const setServers = useStore("servers", false)
@@ -26,6 +28,7 @@ function useLogic() {
 
     if (username) {
       getAll()
+      setPeer(new Peer())
       socket.connect()
       socket.on("message", addMessage)
       socket.on("room", rooms => setRooms({ username, rooms }))
@@ -37,7 +40,7 @@ function useLogic() {
         socket.disconnect()
       }
     }
-  }, [username, addNotification, setServers, setRooms, addMessage])
+  }, [username, addNotification, setServers, setRooms, addMessage, setPeer])
 
   useEffect(() => {
     Object.keys(rooms).forEach(room => socket.emit("join", room))

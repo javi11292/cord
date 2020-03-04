@@ -5,7 +5,7 @@ import Send from "@material-ui/icons/Send"
 import AppBar from "./AppBar"
 import Drawer from "./Drawer"
 import useLogic from "./useLogic"
-import { Box, Frame, Content, TextField, Messages, Message, InfoPlaceholder, Info, IconButton, Video, Root } from "./useStyles"
+import { Box, Frame, Content, TextField, Messages, Message, InfoPlaceholder, Info, IconButton } from "./useStyles"
 
 function Home() {
   const {
@@ -19,53 +19,49 @@ function Home() {
     activeRoom,
     messages,
     send,
-    streamRef,
   } = useLogic()
 
   return (
-    <Root tabIndex="-1">
-      <Video ref={streamRef} width="500px" autoPlay />
-      <Box>
-        <AppBar />
-        <Frame>
-          <Drawer />
-          {activeRoom &&
-            <Content>
-              <Messages ref={chatRef} onScroll={handleScroll}>
-                {messages.map(({ from, date, text }) => (
-                  <Message key={date} local={from === username}>
-                    {text}
-                    <InfoPlaceholder />
-                    <Info>
-                      {format(date, "HH:mm")}
-                    </Info>
-                  </Message>
-                ))}
-              </Messages>
+    <Box tabIndex="-1">
+      <AppBar />
+      <Frame>
+        <Drawer />
+        {activeRoom &&
+          <Content>
+            <Messages ref={chatRef} onScroll={handleScroll}>
+              {messages.map(({ from, date, text }) => (
+                <Message key={date} local={from === username}>
+                  {text}
+                  <InfoPlaceholder />
+                  <Info>
+                    {format(date, "HH:mm")}
+                  </Info>
+                </Message>
+              ))}
+            </Messages>
 
-              <TextField
-                InputProps={{
-                  endAdornment: (
-                    <InputAdornment position="end">
-                      <IconButton onClick={send}>
-                        <Send />
-                      </IconButton>
-                    </InputAdornment>
-                  )
-                }}
-                autoFocus
-                inputRef={inputRef}
-                value={text}
-                onChange={handleChange}
-                onKeyDown={handleKeyDown}
-                variant="filled"
-                margin="dense"
-                placeholder="Mensaje" />
-            </Content>
-          }
-        </Frame>
-      </Box>
-    </Root>
+            <TextField
+              InputProps={{
+                endAdornment: (
+                  <InputAdornment position="end">
+                    <IconButton onClick={send}>
+                      <Send />
+                    </IconButton>
+                  </InputAdornment>
+                )
+              }}
+              autoFocus
+              inputRef={inputRef}
+              value={text}
+              onChange={handleChange}
+              onKeyDown={handleKeyDown}
+              variant="filled"
+              margin="dense"
+              placeholder="Mensaje" />
+          </Content>
+        }
+      </Frame>
+    </Box>
   )
 }
 

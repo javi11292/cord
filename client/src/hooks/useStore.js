@@ -2,11 +2,15 @@ import getStore from "libraries/store"
 import { NOTIFICATION } from "libraries/constants"
 
 export default getStore({
-  incomingConnection: {
+  incomingCall: {
     state: null,
     reducer: (state, value) => value,
   },
-  connection: {
+  call: {
+    state: null,
+    reducer: (state, value) => value,
+  },
+  peer: {
     state: null,
     reducer: (state, value) => value,
   },

@@ -1,7 +1,3 @@
-import Peer from "peerjs"
-
-const peer = new Peer()
-
 async function getDevices() {
   return (await navigator.mediaDevices.enumerateDevices()).reduce((acc, device) => {
     if (device.kind === "audioinput") acc.audio = true
@@ -15,26 +11,25 @@ async function getStream() {
   return await navigator.mediaDevices.getUserMedia(devices)
 }
 
-function handleStream(stream) {
-  console.log("GOT STREAM")
+function handleStream(stream, openCallback) {
+  openCallback()
+  window.dispatchEvent(new CustomEvent("stream", { detail: stream }))
 }
 
 export async function makeCall(peer, room, openCallback, closeCallback) {
   const stream = await getStream()
-  const calls = room.users.reduce((acc, user) => {
+  return room.users.reduce((acc, user) => {
     if (user === peer.id) return acc
     const call = peer.call(user, stream)
-    call.on("stream", stream => handleStream(stream))
-    acc.push(call)
-    return acc
-  }, [])
-
-  return calls
+    call.on("stream", stream => handleStream(stream, openCallback))
+    call.on("close", closeCallback)
+    return call
+  }, null)
 }
 
-export async function answerCall(call) {
+export async function answerCall(call, openCallback, closeCallback) {
   const stream = await getStream()
   call.answer(stream)
-  call.on("stream", stream => handleStream(stream))
-  return call
+  call.on("stream", stream => handleStream(stream, openCallback))
+  call.on("close", closeCallback)
 }

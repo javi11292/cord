@@ -3,7 +3,6 @@ import socket from "libraries/socket"
 import useStore from "hooks/useStore"
 
 function useLogic() {
-  const streamRef = useRef()
   const [roomMessages, setRoomMessages] = useState([])
   const scrolled = useRef(false)
   const inputRef = useRef()
@@ -12,11 +11,6 @@ function useLogic() {
   const [activeRoom] = useStore("activeRoom")
   const [text, setText] = useState("")
   const [messages] = useStore("messages")
-  const [connection] = useStore("connection")
-
-  useEffect(() => {
-    if (!connection && streamRef.current) streamRef.current.srcObject = null
-  }, [connection])
 
   useEffect(() => {
     setRoomMessages((messages[activeRoom] || []).slice(-50))
@@ -31,18 +25,8 @@ function useLogic() {
       }
     }
 
-    function handleTrack({ detail: track }) {
-      if (streamRef.current) {
-        const stream = streamRef.current.srcObject ? new MediaStream(streamRef.current.srcObject) : new MediaStream()
-        stream.addTrack(track)
-        streamRef.current.srcObject = stream
-      }
-    }
-
-    window.addEventListener("track", handleTrack)
     document.addEventListener("focus", handleFocus, true)
     return () => {
-      window.removeEventListener("track", handleTrack)
       document.removeEventListener("focus", handleFocus, true)
     }
   }, [])
@@ -80,7 +64,6 @@ function useLogic() {
     activeRoom,
     messages: roomMessages,
     send,
-    streamRef,
   }
 }
 

@@ -3,25 +3,11 @@ import styled from "styled-components"
 import { TextField as MuiTextField, Paper, IconButton as MuiIconButton } from "@material-ui/core"
 import grey from "@material-ui/core/colors/grey"
 
-export const Video = styled.video`
-  width: 50%;
-  position: absolute;
-  top: 50%;
-  transform: translate(0, -50%);
-  left: 2rem;
-  z-index: ${props => props.theme.zIndex.drawer + 1};
-`
-
-export const Root = styled.div`
-  position: relative;
-  height: 100%;
-  overflow: hidden;
-`
-
 export const Box = styled.div`
   display: grid;
   grid-template-rows: auto 1fr;
   height: 100%;
+  overflow: hidden;
 `
 
 export const Frame = styled.div`

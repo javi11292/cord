@@ -1,43 +1,59 @@
-import { useState, useEffect } from "react"
+import { useRef, useState, useEffect } from "react"
 import useStore from "hooks/useStore"
-import { answerCall, addListener } from "libraries/webrtc"
+import { answerCall } from "libraries/webrtc"
 
 function useLogic() {
+  const mediaRef = useRef()
+  const [username] = useStore("username")
   const [message, setMessage] = useState()
   const [open, setOpen] = useState(false)
-  const [connection, setConnection] = useStore("connection")
-  const [incomingConnection, setIncomingConnection] = useStore("incomingConnection")
-  const [rooms] = useStore("rooms")
+  const [call, setCall] = useStore("call")
+  const [incomingCall, setIncomingCall] = useStore("incomingCall")
 
-  const roomId = connection?.channel || incomingConnection?.channel
-  const room = rooms[roomId]?.name
+  const callId = incomingCall?.id || call?.id
 
   useEffect(() => {
-    setOpen(!!room)
-  }, [room])
+    if (!call && mediaRef.current) mediaRef.current.srcObject = null
+  }, [call])
 
   useEffect(() => {
-    if (!room) return
-    if (!connection) {
-      setMessage({ state: "incomingConnection", room })
-    } else {
-      setMessage({ state: incomingConnection ? "incomingConnection" : connection.connectionState, room })
-      addListener(connection, "connected", () => {
-        setMessage({ state: connection.connectionState, room })
-      })
+    if (username) window.addEventListener("stream", handleStream)
+    return () => {
+      if (username) window.removeEventListener("stream", handleStream)
     }
-  }, [room, connection, incomingConnection])
+  }, [username])
+
+  useEffect(() => {
+    setOpen(!!callId)
+  }, [callId])
+
+  useEffect(() => {
+    if (!callId) return
+    setMessage({ isCalling: !incomingCall, name: callId })
+  }, [callId, incomingCall])
+
+  function handleStream({ detail: stream }) {
+    if (mediaRef.current) {
+      mediaRef.current.srcObject = stream
+    }
+  }
 
   function handleClick({ currentTarget }) {
     if (currentTarget.dataset.call) {
-      setIncomingConnection(null)
-
-      setConnection(answerCall(incomingConnection, () => {
-        setConnection(null)
-      }))
+      setIncomingCall(null)
+      answerCall(
+        incomingCall,
+        () => {
+          setCall(incomingCall)
+        },
+        () => {
+          setCall(null)
+          setIncomingCall(null)
+        },
+      )
     } else {
-      if (connection) connection.stop()
-      setIncomingConnection(null)
+      if (call) call.close()
+      setIncomingCall(null)
     }
   }
 
@@ -46,6 +62,7 @@ function useLogic() {
   }
 
   return {
+    mediaRef,
     handleClick,
     handleExited,
     open,

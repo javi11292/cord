@@ -8,12 +8,13 @@ function refresh() {
 }
 
 function useLogic() {
-  const setConnection = useStore("connection", false)
+  const [peer] = useStore("peer")
   const addNotification = useStore("notifications", false)
   const setOpenDrawer = useStore("openDrawer", false)
-  const [connection] = useStore("connection")
-  const [incomingConnection] = useStore("incomingConnection")
+  const [call, setCall] = useStore("call")
+  const [incomingCall] = useStore("incomingCall")
   const [activeRoom] = useStore("activeRoom")
+  const [rooms] = useStore("rooms")
   const theme = useTheme()
   const isDesktop = useMediaQuery(theme.breakpoints.up("sm"))
 
@@ -32,11 +33,20 @@ function useLogic() {
   }
 
   async function handleCall() {
-    setConnection(makeCall(activeRoom, () => setConnection(null)))
+    const call = makeCall(
+      peer,
+      rooms[activeRoom],
+      () => {
+        setCall(call)
+      },
+      () => {
+        setCall(null)
+      },
+    )
   }
 
   return {
-    hasActiveConnection: !!connection || !!incomingConnection,
+    hasActiveCall: !!(call || incomingCall),
     handleCall,
     activeRoom,
     logout,

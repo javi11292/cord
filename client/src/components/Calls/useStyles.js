@@ -1,4 +1,3 @@
-import React from "react"
 import styled, { keyframes, css } from "styled-components"
 import { SnackbarContent as MuiSnackbarContent } from "@material-ui/core"
 
@@ -12,11 +11,17 @@ const color = props => keyframes`
   }
 `
 
-export const SnackbarContent = styled(({ variant, ...props }) => <MuiSnackbarContent {...props} />)`
-  background-color: ${props => props.variant === "connection" ? props.theme.palette.primary.dark : props.theme.palette.secondary.dark};
+export const SnackbarContent = styled(MuiSnackbarContent)`
+  background-color: ${props => props.theme.palette.secondary.dark};
   color: inherit;
-  ${props => props.variant !== "connection"
-    ? css`animation: ${color(props)} 2s ease-out infinite;`
-    : undefined
-  }
+  ${props => css`animation: ${color(props)} 2s ease-out infinite;`}
+`
+
+export const Video = styled.video`
+  width: 50%;
+  position: absolute;
+  top: 50%;
+  transform: translate(0, -50%);
+  left: 2rem;
+  z-index: ${props => props.theme.zIndex.drawer + 1};
 `
