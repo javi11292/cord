@@ -33,10 +33,10 @@ function useLogic() {
   }
 
   async function handleCall() {
-    const call = makeCall(
+    makeCall(
       peer,
       rooms[activeRoom],
-      () => {
+      call => {
         setCall(call)
       },
       () => {

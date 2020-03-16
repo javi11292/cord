@@ -11,6 +11,7 @@ function useLogic() {
   const addMessage = useStore("messages", false)
   const setServers = useStore("servers", false)
   const [rooms, setRooms] = useStore("rooms")
+  const setIncomingCall = useStore("incomingCall", false)
 
   useEffect(() => {
     async function getAll() {
@@ -28,7 +29,9 @@ function useLogic() {
 
     if (username) {
       getAll()
-      setPeer(new Peer("javiscript92" + username))
+      const peer = new Peer("javiscript92" + username)
+      peer.on("call", setIncomingCall)
+      setPeer(peer)
       socket.connect()
       socket.on("message", addMessage)
       socket.on("room", rooms => setRooms({ username, rooms }))
@@ -40,7 +43,7 @@ function useLogic() {
         socket.disconnect()
       }
     }
-  }, [username, addNotification, setServers, setRooms, addMessage, setPeer])
+  }, [username, addNotification, setServers, setRooms, addMessage, setPeer, setIncomingCall])
 
   useEffect(() => {
     Object.keys(rooms).forEach(room => socket.emit("join", room))

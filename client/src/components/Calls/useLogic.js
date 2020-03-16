@@ -10,7 +10,7 @@ function useLogic() {
   const [call, setCall] = useStore("call")
   const [incomingCall, setIncomingCall] = useStore("incomingCall")
 
-  const callId = incomingCall?.id || call?.id
+  const callId = incomingCall?.peer || call?.peer
 
   useEffect(() => {
     if (!call && mediaRef.current) mediaRef.current.srcObject = null
@@ -39,22 +39,18 @@ function useLogic() {
   }
 
   function handleClick({ currentTarget }) {
+    setIncomingCall(null)
     if (currentTarget.dataset.call) {
-      setIncomingCall(null)
       answerCall(
         incomingCall,
-        () => {
-          setCall(incomingCall)
+        call => {
+          setCall(call)
         },
         () => {
           setCall(null)
-          setIncomingCall(null)
         },
       )
-    } else {
-      if (call) call.close()
-      setIncomingCall(null)
-    }
+    } else if (call) call.close()
   }
 
   function handleExited() {

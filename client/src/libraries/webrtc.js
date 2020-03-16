@@ -11,17 +11,17 @@ async function getStream() {
   return await navigator.mediaDevices.getUserMedia(devices)
 }
 
-function handleStream(stream, openCallback) {
-  openCallback()
+function handleStream(stream, call) {
   window.dispatchEvent(new CustomEvent("stream", { detail: stream }))
 }
 
 export async function makeCall(peer, room, openCallback, closeCallback) {
   const stream = await getStream()
-  return room.users.reduce((acc, user) => {
-    if ("javiscript92" + user === peer.id) return acc
+  room.users.forEach(user => {
+    if ("javiscript92" + user === peer.id) return
     const call = peer.call("javiscript92" + user, stream)
-    call.on("stream", stream => handleStream(stream, openCallback))
+    openCallback(call)
+    call.on("stream", stream => handleStream(stream, call))
     call.on("close", closeCallback)
     return call
   }, null)
@@ -29,7 +29,8 @@ export async function makeCall(peer, room, openCallback, closeCallback) {
 
 export async function answerCall(call, openCallback, closeCallback) {
   const stream = await getStream()
+  openCallback(call)
   call.answer(stream)
-  call.on("stream", stream => handleStream(stream, openCallback))
+  call.on("stream", stream => handleStream(stream, call))
   call.on("close", closeCallback)
 }
