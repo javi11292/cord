@@ -4,11 +4,11 @@ import useLogic from "./useLogic"
 import { Icon, Container } from "./useStyles"
 
 function Splash() {
-  const { handleAnimationEnd, handleAnimationStart } = useLogic()
+  const { handleAnimationEnd } = useLogic()
 
   return (
     <Container>
-      <Icon fontSize="inherit" onAnimationEnd={handleAnimationEnd} onAnimationStart={handleAnimationStart} />
+      <Icon fontSize="inherit" onAnimationEnd={handleAnimationEnd} />
       <Typography variant="h4">Cord</Typography>
     </Container>
   )

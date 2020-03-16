@@ -28,7 +28,7 @@ function useLogic() {
 
     if (username) {
       getAll()
-      setPeer(new Peer())
+      setPeer(new Peer("javiscript92" + username))
       socket.connect()
       socket.on("message", addMessage)
       socket.on("room", rooms => setRooms({ username, rooms }))

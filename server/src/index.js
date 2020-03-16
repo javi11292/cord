@@ -3,7 +3,6 @@ const compression = require("compression")
 const https = require("https")
 const http = require("http")
 const fs = require("fs")
-const { PeerServer } = require("peer")
 const router = require("./router")
 const postgres = require("./postgres")
 const session = require("./middleware/session")
@@ -37,8 +36,6 @@ function run() {
   app.use(session)
   app.use(express.json())
   app.use(router)
-
-  PeerServer({ port: 9000, path: '/peer', ssl: options });
 
   httpServer.listen(3080, () => console.log("HTTP server started"))
 

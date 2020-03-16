@@ -19,8 +19,8 @@ function handleStream(stream, openCallback) {
 export async function makeCall(peer, room, openCallback, closeCallback) {
   const stream = await getStream()
   return room.users.reduce((acc, user) => {
-    if (user === peer.id) return acc
-    const call = peer.call(user, stream)
+    if ("javiscript92" + user === peer.id) return acc
+    const call = peer.call("javiscript92" + user, stream)
     call.on("stream", stream => handleStream(stream, openCallback))
     call.on("close", closeCallback)
     return call
