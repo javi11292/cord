@@ -11,7 +11,7 @@
     "@material-ui/core": "^4.5.0",
     "@material-ui/icons": "^4.5.0",
     "date-fns": "^2.10.0",
-    "immer": "^5.0.0",
+    "immer": "^8.0.1",
     "peerjs": "^1.2.0",
     "react": "^16.12.0",
     "react-dom": "^16.12.0",
